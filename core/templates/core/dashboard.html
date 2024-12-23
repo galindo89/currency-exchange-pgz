@@ -1,14 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-    HELLO WORLD. If you are seeing this is because you have logged in!!!!
+{% block title %}Dashboard{% endblock %}
 
-    
-</body>
-</html>
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center">Welcome, {{ user.username }}!</h1>
+            <p class="text-center">If you are seeing this, it means you have logged in.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

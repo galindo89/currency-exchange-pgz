@@ -33,6 +33,8 @@ DEBUG = os.environ.get("DEBUG", "True") == "True"
 ALLOWED_HOSTS = [
     
     '.herokuapp.com',
+    "localhost",
+    "127.0.0.1"
     
     
 ]
@@ -47,8 +49,18 @@ ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'optional'  # Options: 'mandatory', 'optional', 'none'
 ACCOUNT_SIGNUP_REDIRECT_URL = '/'  # Redirect after signup
 LOGIN_REDIRECT_URL = '/'  # Redirect after login
-LOGOUT_REDIRECT_URL = '/accounts/login'  # Redirect after logout
+LOGOUT_REDIRECT_URL = '/'  # Redirect after logout
 LOGIN_URL = '/accounts/login/'
+
+# Session settings
+
+SESSION_COOKIE_AGE = 86400  # Sessions last for 1 day
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Sessions expire on browser close
+
+
+
+
+
 
 # Authentication backends
 
@@ -56,6 +68,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend', 
     'allauth.account.auth_backends.AuthenticationBackend',  
 ]
+
 
 # Application definition
 
@@ -74,7 +87,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
+    'django.middleware.security.SecurityMiddleware',    
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -89,7 +102,10 @@ ROOT_URLCONF = 'currency_portal.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            
+            BASE_DIR / 'templates',            
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -160,8 +176,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
 
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]  
+STATIC_ROOT = BASE_DIR / "staticfiles"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
