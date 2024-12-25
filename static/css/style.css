@@ -107,6 +107,7 @@ input#id_remember, label[for="id_remember"] {
     display: none;
 }
 
+
 /* Mobile Styles */
 @media (max-width: 768px) {
    

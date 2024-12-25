@@ -10,3 +10,6 @@ cloudinary_python.txt
 venv/
 env.py
 Project-Documentation-Assets/
+static/js/passwordValidation-test.js
+static/css/style-password-requirements.css
+templates/account/signup-test.html
