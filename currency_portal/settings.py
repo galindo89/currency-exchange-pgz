@@ -70,11 +70,10 @@ DEFAULT_FROM_EMAIL = "pablo.galindozapata@gmail.com"
 
 if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    
+#Exchange rates integration settings
 
-
-
-
-
+OPENEXCHANGERATES_API_KEY = os.environ.get("OPENEXCHANGERATES_API_KEY")
 
 
 
