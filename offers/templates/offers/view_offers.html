@@ -19,10 +19,15 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ offer.user.username }}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">
-                        {% if offer.is_buying %} Buying {% else %} Selling {% endif %} {{ offer.amount }} {{ offer.currency }}
+                        {% if offer.is_buying %} Buying {% else %} Selling {% endif %} 
+                        {{ offer.amount }} {{ offer.currency }}
                     </h6>
                     <p class="card-text">
-                        Exchange Rate: <strong>{{ offer.exchange_rate }}</strong><br>
+                        Exchange Rate: <strong>{{ offer.exchange_rate }} EUR/USD</strong><br>
+                        Conversion Amount: <strong>{{ offer.conversion_amount }}
+                            {% if offer.currency == "USD" %} EUR {% else %} USD {% endif %}
+                        </strong><br>
+                        ER Type: <strong>{{  offer.get_rate_type_display }}</strong><br>
                         Created On: {{ offer.created_at|date:"M d, Y" }}
                     </p>
                     {% if user.is_authenticated and user == offer.user %}
