@@ -75,6 +75,14 @@ if DEBUG:
 
 OPENEXCHANGERATES_API_KEY = os.environ.get("OPENEXCHANGERATES_API_KEY")
 
+# Crontab settings
+
+
+CRONJOBS = [
+    ('0 */2 * * *', 'django.core.management.call_command', ['update_exchange_rate']),  #Cron job to update exchange rate every 2 hours
+]
+
+
 
 
 # Authentication backends
@@ -94,6 +102,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "django_crontab",
     "core",
     "users",
     "offers",

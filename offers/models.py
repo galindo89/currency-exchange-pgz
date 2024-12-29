@@ -47,3 +47,4 @@ class LatestExchangeRate(models.Model):
     def __str__(self):
         return f"{self.base_currency} to {self.target_currency}: {self.rate} (updated {self.timestamp})"
 
+
