@@ -59,12 +59,17 @@
             
 
 
-            <div>
-                {% if user.is_authenticated %}
-                    <a href="/accounts/logout/" class="btn btn-danger btn-sm">Log Out</a>
-               
-                {% endif %}
+        <div class="d-flex align-items-center">
+            <!-- Exchange Rate -->
+            <div class="navbar-text me-3">
+                USD to EUR: <strong>{{ exchange_rate }}</strong>
             </div>
+            
+            <!-- Log Out Button -->
+            {% if user.is_authenticated %}
+                <a href="/accounts/logout/" class="btn btn-danger btn-sm">Log Out</a>
+            {% endif %}
+        </div>
         </div>
     </nav>
 
