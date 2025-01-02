@@ -19,7 +19,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ offer.user.username }}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">
-                        {% if offer.is_buying %} Buying {% else %} Selling {% endif %} 
+                        {% if offer.is_buying %} Buying {% else %} Selling {% endif %}
                         {{ offer.amount }} {{ offer.currency }}
                     </h6>
                     <p class="card-text">
@@ -27,13 +27,123 @@
                         Conversion Amount: <strong>{{ offer.conversion_amount }}
                             {% if offer.currency == "USD" %} EUR {% else %} USD {% endif %}
                         </strong><br>
-                        ER Type: <strong>{{  offer.get_rate_type_display }}</strong><br>
+                        ER Type: <strong>{{ offer.get_rate_type_display }}</strong><br>
                         Created On: {{ offer.created_at|date:"M d, Y" }}
                     </p>
+
+                    <!-- Bid Status for Logged-in User -->
+                    {% if offer.user_bid %}
+                    <p class="card-text">
+                        <strong>Your Bid:</strong> {{ offer.user_bid.amount }}<br>
+                        <strong>Status:</strong> {{ offer.user_bid.get_status_display }}
+                    </p>
+                    {% endif %}
+
+                    <!-- For Offer Creator -->
                     {% if user.is_authenticated and user == offer.user %}
-                    <div class="d-flex justify-content-between">
-                        <a href="{% url 'offers:edit_offer' offer.id %}" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="{% url 'offers:delete_offer' offer.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    <div>
+                        <h6>Bids:</h6>
+                        <p><strong>{{ offer.bids.count }}</strong> Bids Received</p>
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#bidsModal{{ offer.id }}">
+                            View Bids
+                        </button>
+
+                        <!-- Bids Modal -->
+                        <div class="modal fade" id="bidsModal{{ offer.id }}" tabindex="-1" aria-labelledby="bidsModalLabel{{ offer.id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="bidsModalLabel{{ offer.id }}">Bids for Offer</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% for bid in offer.bids.all %}
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span>
+                                                {{ bid.user.username }}: {{ bid.amount }} - Status: {{ bid.get_status_display }}
+                                            </span>
+                                            {% if bid.status == 'AWAITING' %}
+                                            <div>
+                                                <a href="{% url 'offers:accept_bid' bid.id %}" class="btn btn-success btn-sm">Accept</a>
+                                                <a href="{% url 'offers:reject_bid' bid.id %}" class="btn btn-danger btn-sm">Reject</a>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        <hr>
+                                        {% empty %}
+                                        <p>No bids yet.</p>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <!-- For Bidders -->
+                    <div>
+                        {% if offer.user_bid %}
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#bidModal{{ offer.id }}">
+                            View/Edit Your Bid
+                        </button>
+                        {% else %}
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#placeBidModal{{ offer.id }}">
+                            Place Bid
+                        </button>
+                        {% endif %}
+
+                        <!-- Modals -->
+                        {% if offer.user_bid %}
+                        <!-- View/Edit Bid Modal -->
+                        <div class="modal fade" id="bidModal{{ offer.id }}" tabindex="-1" aria-labelledby="bidModalLabel{{ offer.id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="bidModalLabel{{ offer.id }}">Your Bid</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Amount: <strong>{{ offer.user_bid.amount }}</strong></p>
+                                        <p>Status: <strong>{{ offer.user_bid.get_status_display }}</strong></p>
+                                        <form method="post" action="{% url 'offers:edit_bid' offer.user_bid.id %}">
+                                            {% csrf_token %}
+                                            <div class="mb-3">
+                                                <label for="amount" class="form-label">Edit Bid Amount</label>
+                                                <input type="number" step="0.01" name="amount" id="amount" class="form-control" value="{{ offer.user_bid.amount }}" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+                                        </form>
+                                        <hr>
+                                        <form method="post" action="{% url 'offers:delete_bid' offer.user_bid.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger btn-sm">Remove Bid</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <!-- Place Bid Modal -->
+                        <div class="modal fade" id="placeBidModal{{ offer.id }}" tabindex="-1" aria-labelledby="placeBidModalLabel{{ offer.id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="placeBidModalLabel{{ offer.id }}">Place Bid</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post" action="{% url 'offers:place_bid' offer.id %}">
+                                            {% csrf_token %}
+                                            <div class="mb-3">
+                                                <label for="amount" class="form-label">Bid Amount</label>
+                                                <input type="number" step="0.01" name="amount" id="amount" class="form-control" placeholder="Enter your bid" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary btn-sm">Submit Bid</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                     {% endif %}
                 </div>

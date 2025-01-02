@@ -46,5 +46,25 @@ class LatestExchangeRate(models.Model):
 
     def __str__(self):
         return f"{self.base_currency} to {self.target_currency}: {self.rate} (updated {self.timestamp})"
+    
+#Bids model
 
+class Bid(models.Model):
+    STATUS_CHOICES = [
+        ('AWAITING', 'Awaiting Response'),
+        ('ACCEPTED', 'Accepted'),
+        ('REJECTED', 'Rejected'),
+    ]
+
+    offer = models.ForeignKey('Offer', on_delete=models.CASCADE, related_name='bids')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bids')
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='AWAITING')
+    
+    class Meta:
+        unique_together = ('user', 'offer')  # Ensure one bid per user per offer
+
+    def __str__(self):
+        return f"Bid by {self.user.username} on {self.offer} - Amount: {self.amount} ({self.get_status_display()})"
 
