@@ -141,4 +141,3 @@ def delete_bid(request, bid_id):
         bid.delete()
         messages.success(request, "Your bid has been removed.")
         return redirect('offers:view_offers')
-
