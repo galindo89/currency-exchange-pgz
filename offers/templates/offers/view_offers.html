@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}View Offers{% endblock %}
 
@@ -70,28 +71,34 @@
                     <div>
                         <h6>Bids:</h6>
                         <p><strong>{{ offer.bids.count }}</strong> Bids Received</p>
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#bidsModal{{ offer.id }}">
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#bidsModal{{ offer.id }}">
                             View Bids
                         </button>
 
                         <!-- Bids Modal -->
-                        <div class="modal fade" id="bidsModal{{ offer.id }}" tabindex="-1" aria-labelledby="bidsModalLabel{{ offer.id }}" aria-hidden="true">
+                        <div class="modal fade" id="bidsModal{{ offer.id }}" tabindex="-1"
+                            aria-labelledby="bidsModalLabel{{ offer.id }}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="bidsModalLabel{{ offer.id }}">Bids for Offer</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         {% for bid in offer.bids.all %}
                                         <div class="d-flex justify-content-between align-items-center">
                                             <span>
-                                                {{ bid.user.username }}: {{ bid.amount }} - Status: {{ bid.get_status_display }}
+                                                {{ bid.user.username }}: {{ bid.amount }} - Status: {{
+                                                bid.get_status_display }}
                                             </span>
                                             {% if bid.status == 'AWAITING' %}
                                             <div>
-                                                <a href="{% url 'offers:accept_bid' bid.id %}" class="btn btn-success btn-sm">Accept</a>
-                                                <a href="{% url 'offers:reject_bid' bid.id %}" class="btn btn-danger btn-sm">Reject</a>
+                                                <a href="{% url 'offers:accept_bid' bid.id %}"
+                                                    class="btn btn-success btn-sm">Accept</a>
+                                                <a href="{% url 'offers:reject_bid' bid.id %}"
+                                                    class="btn btn-danger btn-sm">Reject</a>
                                             </div>
                                             {% endif %}
                                         </div>
@@ -108,11 +115,13 @@
                     <!-- For Bidders -->
                     <div>
                         {% if offer.user_bid %}
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#bidModal{{ offer.id }}">
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#bidModal{{ offer.id }}">
                             View/Edit Your Bid
                         </button>
                         {% else %}
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#placeBidModal{{ offer.id }}">
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#placeBidModal{{ offer.id }}">
                             Place Bid
                         </button>
                         {% endif %}
@@ -121,12 +130,14 @@
                         <!-- Modals -->
                         {% if offer.user_bid %}
                         <!-- View/Edit Bid Modal -->
-                        <div class="modal fade" id="bidModal{{ offer.id }}" tabindex="-1" aria-labelledby="bidModalLabel{{ offer.id }}" aria-hidden="true">
+                        <div class="modal fade" id="bidModal{{ offer.id }}" tabindex="-1"
+                            aria-labelledby="bidModalLabel{{ offer.id }}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="bidModalLabel{{ offer.id }}">Your Bid</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <p>Amount: <strong>{{ offer.user_bid.amount }}</strong></p>
@@ -134,9 +145,29 @@
                                         <form method="post" action="{% url 'offers:edit_bid' offer.user_bid.id %}">
                                             {% csrf_token %}
                                             <div class="mb-3">
-                                                <label for="amount" class="form-label">Edit Bid Amount</label>
-                                                <input type="number" step="0.01" name="amount" id="amount" class="form-control" value="{{ offer.user_bid.amount }}" required>
+                                                <label for="amount" class="form-label">Enter Your Bid (in {{
+                                                    offer.currency }}):</label>
+                                                <input type="number" step="0.01" name="amount"
+                                                    id="amount-{{ offer.id }}" class="form-control"
+                                                    placeholder="Enter your bid amount" required>
                                             </div>
+                                            <p class="text-muted">
+                                                The offer is for <strong>{{ offer.amount }} {{ offer.currency
+                                                    }}</strong>.
+                                            </p>
+                                            <p class="text-muted">
+                                                Current exchange rate: <strong id="exchangeRate-{{ offer.id }}">{{
+                                                    offer.exchange_rate }}</strong>.
+                                            </p>
+                                            <p class="text-muted">
+                                                Your bid will be equivalent to <span
+                                                    id="conversionPreview-{{ offer.id }}"></span> in the opposite
+                                                currency.
+                                            </p>
+                                            <p class="text-muted" id="currencyType-{{ offer.id }}"
+                                                style="display:none;">
+                                                {{ offer.currency }}
+                                            </p>
                                             <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
                                         </form>
                                         <hr>
@@ -150,20 +181,42 @@
                         </div>
                         {% else %}
                         <!-- Place Bid Modal -->
-                        <div class="modal fade" id="placeBidModal{{ offer.id }}" tabindex="-1" aria-labelledby="placeBidModalLabel{{ offer.id }}" aria-hidden="true">
+                        <div class="modal fade" id="placeBidModal{{ offer.id }}" tabindex="-1"
+                            aria-labelledby="placeBidModalLabel{{ offer.id }}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="placeBidModalLabel{{ offer.id }}">Place Bid</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <form method="post" action="{% url 'offers:place_bid' offer.id %}">
                                             {% csrf_token %}
                                             <div class="mb-3">
-                                                <label for="amount" class="form-label">Bid Amount</label>
-                                                <input type="number" step="0.01" name="amount" id="amount" class="form-control" placeholder="Enter your bid" required>
+                                                <label for="amount-{{ offer.id }}" class="form-label">Bid Amount (in {{
+                                                    offer.currency }}):</label>
+                                                <input type="number" step="0.01" name="amount"
+                                                    id="amount-{{ offer.id }}" class="form-control"
+                                                    placeholder="Enter your bid" required>
                                             </div>
+                                            <p class="text-muted">
+                                                The offer is for <strong>{{ offer.amount }} {{ offer.currency
+                                                    }}</strong>.
+                                            </p>
+                                            <p class="text-muted">
+                                                Current exchange rate: <strong id="exchangeRate-{{ offer.id }}">{{
+                                                    offer.exchange_rate }}</strong>.
+                                            </p>
+                                            <p class="text-muted">
+                                                Your bid will be equivalent to <span
+                                                    id="conversionPreview-{{ offer.id }}"></span> in the opposite
+                                                currency.
+                                            </p>
+                                            <p class="text-muted" id="currencyType-{{ offer.id }}"
+                                                style="display:none;">
+                                                {{ offer.currency }}
+                                            </p>
                                             <button type="submit" class="btn btn-primary btn-sm">Submit Bid</button>
                                         </form>
                                     </div>
@@ -179,4 +232,7 @@
         {% endfor %}
     </div>
 </div>
+{% block scripts %}
+<script src="{% static 'js/bids.js' %}"></script>
+{% endblock %}
 {% endblock %}
