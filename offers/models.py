@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Offer model
 class Offer(models.Model):
@@ -62,7 +63,7 @@ class Bid(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='AWAITING')
     
     class Meta:
-        unique_together = ('user', 'offer')  
+        unique_together = ('user', 'offer')  # Ensure one bid per user per offer
 
     def __str__(self):
         return f"Bid by {self.user.username} on {self.offer} - Amount: {self.amount} ({self.get_status_display()})"
