@@ -5,6 +5,7 @@ from django.http import HttpResponseForbidden
 from .models import Offer, LatestExchangeRate, Bid
 from .forms import OfferForm
 from .utils import fetch_and_update_exchange_rate
+from django.db.models import Q
 
 # Create your views here.
 
@@ -31,17 +32,28 @@ def create_offer(request):
 
 
 @login_required
-
 def view_offers(request):
     offers = Offer.objects.prefetch_related('bids').all()
 
-    for offer in offers:
-        offer.user_has_bid = offer.bids.filter(user=request.user).exists() if request.user.is_authenticated else False
+    # Filters
+    is_buying = request.GET.get('is_buying')
+    currency = request.GET.get('currency')
+    rate_type = request.GET.get('rate_type')
 
-        offer.user_bid = offer.bids.filter(user=request.user).first() if request.user.is_authenticated else None
+    if is_buying in ['0', '1']: 
+        offers = offers.filter(is_buying=bool(int(is_buying)))
+
+    if currency:
+        offers = offers.filter(currency=currency)
+
+    if rate_type:
+        offers = offers.filter(rate_type=rate_type)
+
+    # Annotate offers with user's bid if exists
+    for offer in offers:
+        offer.user_bid = offer.bids.filter(user=request.user).first()
 
     return render(request, 'offers/view_offers.html', {'offers': offers})
-
 
 @login_required
 def edit_offer(request, pk):
@@ -94,16 +106,6 @@ def place_bid(request, offer_id):
 
 
 @login_required
-def reject_bid(request, bid_id):
-    bid = get_object_or_404(Bid, id=bid_id)
-    if bid.offer.user != request.user:
-        return HttpResponseForbidden()
-
-    bid.status = "REJECTED"
-    bid.save()
-    messages.success(request, "You have rejected the bid.")
-    return redirect('offers:view_offers')
-@login_required
 def edit_bid(request, bid_id):
     bid = get_object_or_404(Bid, id=bid_id, user=request.user)
 
@@ -113,6 +115,8 @@ def edit_bid(request, bid_id):
         bid.save()
         messages.success(request, "Your bid has been updated.")
         return redirect('offers:view_offers')
+    else:
+        return HttpResponseForbidden()
 
 @login_required
 def accept_bid(request, bid_id):
