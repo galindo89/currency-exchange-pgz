@@ -66,4 +66,3 @@ class Bid(models.Model):
 
     def __str__(self):
         return f"Bid by {self.user.username} on {self.offer} - Amount: {self.amount} ({self.get_status_display()})"
-
