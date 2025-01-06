@@ -4,13 +4,39 @@
 
 {% block content %}
 <div class="container mt-5">
-    <!-- Header with Create Offer Button -->
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
-        <h2 class="text-center text-md-start mb-2 mb-md-0">Active Offers</h2>
-        {% if user.is_authenticated %}
-        <a href="{% url 'offers:create_offer' %}" class="btn btn-primary w-100 w-md-auto">Create Offer</a>
-        {% endif %}
-    </div>
+   <!-- Header with Create Offer Button -->
+       <!-- Create Offer Button -->
+       {% if user.is_authenticated %}
+       <div class="d-flex justify-content-end mb-3">
+           <a href="{% url 'offers:create_offer' %}" class="btn btn-primary w-100 w-md-auto">Create Offer</a>
+       </div>
+       {% endif %}
+   
+       <!-- Header with Filters -->
+       <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
+           <h2 class="text-center text-md-start mb-2 mb-md-0">Active Offers</h2>
+   
+           <!-- Filter Section -->
+           <form method="get" action="" class="d-flex align-items-center gap-2">
+               <select name="is_buying" id="is_buying" class="form-select form-select-sm me-2">
+                   <option value="">All Types</option>
+                   <option value="1" {% if request.GET.is_buying|default:'' == '1' %}selected{% endif %}>Buying</option>
+                   <option value="0" {% if request.GET.is_buying|default:'' == '0' %}selected{% endif %}>Selling</option>
+               </select>
+               <select name="currency" id="currency" class="form-select form-select-sm me-2">
+                   <option value="">All Currencies</option>
+                   <option value="USD" {% if request.GET.currency == 'USD' %}selected{% endif %}>USD</option>
+                   <option value="EUR" {% if request.GET.currency == 'EUR' %}selected{% endif %}>EUR</option>
+               </select>
+               <select name="rate_type" id="rate_type" class="form-select form-select-sm me-2">
+                   <option value="">All Rates</option>
+                   <option value="FIXED" {% if request.GET.rate_type == 'FIXED' %}selected{% endif %}>Fixed</option>
+                   <option value="VARIABLE" {% if request.GET.rate_type == 'VARIABLE' %}selected{% endif %}>Flexible</option>
+               </select>
+               <button type="submit" class="btn btn-primary btn-sm w-100 w-md-auto">Filter</button>
+               <a href="{% url 'offers:view_offers' %}" class="btn btn-secondary btn-sm w-100 w-md-auto">Reset</a>
+           </form>
+       </div>
 
     <div class="row g-3">
         {% for offer in offers %}
@@ -90,6 +116,7 @@
                             Place Bid
                         </button>
                         {% endif %}
+                    </div>
 
                         <!-- Modals -->
                         {% if offer.user_bid %}

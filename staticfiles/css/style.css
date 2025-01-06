@@ -107,6 +107,14 @@ input#id_remember, label[for="id_remember"] {
     display: none;
 }
 
+button.btn,
+a.btn {
+    padding: 0.25rem 0.25rem; 
+    font-size: 0.875rem;      
+    line-height: 1.5;        
+}
+
+
 /* Mobile Styles */
 @media (max-width: 768px) {
    
