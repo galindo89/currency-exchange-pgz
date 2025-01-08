@@ -70,9 +70,17 @@
                     <div>
                         <h6>Bids:</h6>
                         <p><strong>{{ offer.bids.count }}</strong> Bids Received</p>
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#bidsModal{{ offer.id }}">
-                            View Bids
-                        </button>
+                        <div class="d-flex flex-wrap align-items-stretch gap-2 mt-2">
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#bidsModal{{ offer.id }}">
+                                View Bids
+                            </button>
+                            <a href="{% url 'offers:edit_offer' offer.id %}" class="btn btn-warning btn-sm">Edit Offer</a>
+                            <form method="post" action="{% url 'offers:delete_offer' offer.id %}" class="form-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Delete Offer</button>
+                            </form>
+                        </div>
+                        
 
                         <!-- Bids Modal -->
                         <div class="modal fade" id="bidsModal{{ offer.id }}" tabindex="-1" aria-labelledby="bidsModalLabel{{ offer.id }}" aria-hidden="true">

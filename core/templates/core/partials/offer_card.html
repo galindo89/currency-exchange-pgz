@@ -1,0 +1,28 @@
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">
+            {% if offer.is_buying %} Buying {% else %} Selling {% endif %}
+            {{ offer.amount }} {{ offer.currency }}
+        </h5>
+        <p class="card-text">
+            Exchange Rate: <strong>{{ offer.exchange_rate }}</strong><br>
+            Conversion Amount: <strong>{{ offer.conversion_amount }}
+                {% if offer.currency == "USD" %} EUR {% else %} USD {% endif %}
+            </strong><br>
+            Rate Type: <strong>{{ offer.get_rate_type_display }}</strong><br>
+            Created On: {{ offer.created_at|date:"M d, Y" }}
+        </p>
+        {% if user == offer.user %}
+        <div class="d-flex justify-content-between">
+            <a href="{% url 'offers:edit_offer' offer.id %}" class="btn btn-warning btn-sm">Edit</a>
+            <a href="{% url 'offers:delete_offer' offer.id %}" class="btn btn-danger btn-sm">Delete</a>
+        </div>
+        {% endif %}
+        {% if offer.user_bid %}
+        <p class="card-text">
+            <strong>Your Bid:</strong> {{ offer.user_bid.amount }} {{ offer.user_bid.currency }}<br>
+            <strong>Status:</strong> {{ offer.user_bid.get_status_display }}
+        </p>
+        {% endif %}
+    </div>
+</div>
