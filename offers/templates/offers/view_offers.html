@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{%load static%}
 
 {% block title %}View Offers{% endblock %}
 
@@ -41,8 +42,8 @@
     <div class="row g-3">
         {% for offer in offers %}
         <div class="col-12 col-md-6 col-lg-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
+            <div class="card shadow-sm ">
+                 <div class="card-body">
                     <h5 class="card-title">{{ offer.user.username }}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">
                         {% if offer.is_buying %} Buying {% else %} Selling {% endif %}
@@ -70,14 +71,16 @@
                     <div>
                         <h6>Bids:</h6>
                         <p><strong>{{ offer.bids.count }}</strong> Bids Received</p>
-                        <div class="d-flex flex-wrap align-items-stretch gap-2 mt-2">
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#bidsModal{{ offer.id }}">
+                        <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
+                            <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#bidsModal{{ offer.id }}">
                                 View Bids
                             </button>
-                            <a href="{% url 'offers:edit_offer' offer.id %}" class="btn btn-warning btn-sm">Edit Offer</a>
-                            <form method="post" action="{% url 'offers:delete_offer' offer.id %}" class="form-inline">
+                            <a href="{% url 'offers:edit_offer' offer.id %}" class="btn btn-warning btn-sm w-100 text-center">
+                                Edit Offer
+                            </a>
+                            <form method="post" action="{% url 'offers:delete_offer' offer.id %}" class="d-inline w-100 delete-form">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-danger btn-sm">Delete Offer</button>
+                                <button type="submit" class="btn btn-danger btn-sm w-100 text-center" data-confirm="Are you sure you want to delete this offer?">Delete Offer</button>
                             </form>
                         </div>
                         
@@ -187,4 +190,9 @@
         {% endfor %}
     </div>
 </div>
+{% block scripts %}
+<script src="{% static 'js/delete_confirmation.js' %}"></script>
 {% endblock %}
+{% endblock %}
+
+
