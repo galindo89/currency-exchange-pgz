@@ -5,7 +5,7 @@ from django.http import HttpResponseForbidden
 from .models import Offer, LatestExchangeRate, Bid
 from .forms import OfferForm
 from .utils import fetch_and_update_exchange_rate
-from django.db.models import Q
+from .forms import BidForm
 
 # Create your views here.
 
@@ -92,31 +92,40 @@ def delete_offer(request, pk):
 @login_required
 def place_bid(request, offer_id):
     offer = get_object_or_404(Offer, id=offer_id)
-    existing_bid = Bid.objects.filter(user=request.user, offer=offer).first()
+    existing_bid = Bid.objects.filter(offer=offer, user=request.user).first()
 
     if existing_bid:
         messages.error(request, "You have already placed a bid for this offer.")
         return redirect('offers:view_offers')
 
     if request.method == "POST":
-        amount = request.POST.get('amount')
-        Bid.objects.create(user=request.user, offer=offer, amount=amount)
-        messages.success(request, "Your bid has been placed.")
-        return redirect('offers:view_offers')
+        form = BidForm(request.POST)
+        if form.is_valid():
+            bid = form.save(commit=False)
+            bid.offer = offer
+            bid.user = request.user
+            bid.save()
+            messages.success(request, "Bid placed successfully.")
+            return redirect('offers:view_offers')
+    else:
+        form = BidForm()
 
+    return render(request, 'offers/place_bid.html', {'form': form, 'offer': offer})
 
 @login_required
 def edit_bid(request, bid_id):
     bid = get_object_or_404(Bid, id=bid_id, user=request.user)
 
     if request.method == "POST":
+      
         amount = request.POST.get('amount')
         bid.amount = amount
         bid.save()
         messages.success(request, "Your bid has been updated.")
         return redirect('offers:view_offers')
-    else:
-        return HttpResponseForbidden()
+    
+    
+    return render(request, 'offers/edit_bid.html', {'bid': bid})
 
 @login_required
 def accept_bid(request, bid_id):

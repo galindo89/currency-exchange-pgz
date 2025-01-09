@@ -5,45 +5,45 @@
 
 {% block content %}
 <div class="container mt-5">
-   <!-- Header with Create Offer Button -->
-       <!-- Create Offer Button -->
-       {% if user.is_authenticated %}
-       <div class="d-flex justify-content-end mb-3">
-           <a href="{% url 'offers:create_offer' %}" class="btn btn-primary w-100 w-md-auto">Create Offer</a>
-       </div>
-       {% endif %}
-   
-       <!-- Header with Filters -->
-       <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
-           <h2 class="text-center text-md-start mb-2 mb-md-0">Active Offers</h2>
-   
-           <!-- Filter Section -->
-           <form method="get" action="" class="d-flex align-items-center gap-2">
-               <select name="is_buying" id="is_buying" class="form-select form-select-sm me-2">
-                   <option value="">All Types</option>
-                   <option value="1" {% if request.GET.is_buying|default:'' == '1' %}selected{% endif %}>Buying</option>
-                   <option value="0" {% if request.GET.is_buying|default:'' == '0' %}selected{% endif %}>Selling</option>
-               </select>
-               <select name="currency" id="currency" class="form-select form-select-sm me-2">
-                   <option value="">All Currencies</option>
-                   <option value="USD" {% if request.GET.currency == 'USD' %}selected{% endif %}>USD</option>
-                   <option value="EUR" {% if request.GET.currency == 'EUR' %}selected{% endif %}>EUR</option>
-               </select>
-               <select name="rate_type" id="rate_type" class="form-select form-select-sm me-2">
-                   <option value="">All Rates</option>
-                   <option value="FIXED" {% if request.GET.rate_type == 'FIXED' %}selected{% endif %}>Fixed</option>
-                   <option value="VARIABLE" {% if request.GET.rate_type == 'VARIABLE' %}selected{% endif %}>Flexible</option>
-               </select>
-               <button type="submit" class="btn btn-primary btn-sm w-100 w-md-auto">Filter</button>
-               <a href="{% url 'offers:view_offers' %}" class="btn btn-secondary btn-sm w-100 w-md-auto">Reset</a>
-           </form>
-       </div>
+    <!-- Header with Create Offer Button -->
+    <!-- Create Offer Button -->
+    {% if user.is_authenticated %}
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{% url 'offers:create_offer' %}" class="btn btn-primary w-100 w-md-auto">Create Offer</a>
+    </div>
+    {% endif %}
+
+    <!-- Header with Filters -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
+        <h2 class="text-center text-md-start mb-2 mb-md-0">Active Offers</h2>
+
+        <!-- Filter Section -->
+        <form method="get" action="" class="d-flex align-items-center gap-2">
+            <select name="is_buying" id="is_buying" class="form-select form-select-sm me-2">
+                <option value="">All Types</option>
+                <option value="1" {% if request.GET.is_buying|default:'' == '1' %}selected{% endif %}>Buying</option>
+                <option value="0" {% if request.GET.is_buying|default:'' == '0' %}selected{% endif %}>Selling</option>
+            </select>
+            <select name="currency" id="currency" class="form-select form-select-sm me-2">
+                <option value="">All Currencies</option>
+                <option value="USD" {% if request.GET.currency == 'USD' %}selected{% endif %}>USD</option>
+                <option value="EUR" {% if request.GET.currency == 'EUR' %}selected{% endif %}>EUR</option>
+            </select>
+            <select name="rate_type" id="rate_type" class="form-select form-select-sm me-2">
+                <option value="">All Rates</option>
+                <option value="FIXED" {% if request.GET.rate_type == 'FIXED' %}selected{% endif %}>Fixed</option>
+                <option value="VARIABLE" {% if request.GET.rate_type == 'VARIABLE' %}selected{% endif %}>Flexible</option>
+            </select>
+            <button type="submit" class="btn btn-primary btn-sm w-100 w-md-auto">Filter</button>
+            <a href="{% url 'offers:view_offers' %}" class="btn btn-secondary btn-sm w-100 w-md-auto">Reset</a>
+        </form>
+    </div>
 
     <div class="row g-3">
         {% for offer in offers %}
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card shadow-sm ">
-                 <div class="card-body">
+                <div class="card-body">
                     <h5 class="card-title">{{ offer.user.username }}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">
                         {% if offer.is_buying %} Buying {% else %} Selling {% endif %}
@@ -72,36 +72,45 @@
                         <h6>Bids:</h6>
                         <p><strong>{{ offer.bids.count }}</strong> Bids Received</p>
                         <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
-                            <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#bidsModal{{ offer.id }}">
+                            <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="modal"
+                                data-bs-target="#bidsModal{{ offer.id }}">
                                 View Bids
                             </button>
-                            <a href="{% url 'offers:edit_offer' offer.id %}" class="btn btn-warning btn-sm w-100 text-center">
+                            <a href="{% url 'offers:edit_offer' offer.id %}"
+                                class="btn btn-warning btn-sm w-100 text-center">
                                 Edit Offer
                             </a>
-                            <button type="button" class="btn btn-danger btn-sm w-100 text-center" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" data-action="{% url 'offers:delete_offer' offer.id %}">
+                            <button type="button" class="btn btn-danger btn-sm w-100 text-center" data-bs-toggle="modal"
+                                data-bs-target="#deleteConfirmationModal"
+                                data-action="{% url 'offers:delete_offer' offer.id %}">
                                 Delete Offer
                             </button>
                         </div>
-                        
+
 
                         <!-- Bids Modal -->
-                        <div class="modal fade" id="bidsModal{{ offer.id }}" tabindex="-1" aria-labelledby="bidsModalLabel{{ offer.id }}" aria-hidden="true">
+                        <div class="modal fade" id="bidsModal{{ offer.id }}" tabindex="-1"
+                            aria-labelledby="bidsModalLabel{{ offer.id }}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="bidsModalLabel{{ offer.id }}">Bids for Offer</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         {% for bid in offer.bids.all %}
                                         <div class="d-flex justify-content-between align-items-center">
                                             <span>
-                                                {{ bid.user.username }}: {{ bid.amount }} - Status: {{ bid.get_status_display }}
+                                                {{ bid.user.username }}: {{ bid.amount }} - Status: {{
+                                                bid.get_status_display }}
                                             </span>
                                             {% if bid.status == 'AWAITING' %}
                                             <div>
-                                                <a href="{% url 'offers:accept_bid' bid.id %}" class="btn btn-success btn-sm">Accept</a>
-                                                <a href="{% url 'offers:reject_bid' bid.id %}" class="btn btn-danger btn-sm">Reject</a>
+                                                <a href="{% url 'offers:accept_bid' bid.id %}"
+                                                    class="btn btn-success btn-sm">Accept</a>
+                                                <a href="{% url 'offers:reject_bid' bid.id %}"
+                                                    class="btn btn-danger btn-sm">Reject</a>
                                             </div>
                                             {% endif %}
                                         </div>
@@ -116,73 +125,15 @@
                     </div>
                     {% else %}
                     <!-- For Bidders -->
-                    <div>
-                        {% if offer.user_bid %}
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#bidModal{{ offer.id }}">
-                            View/Edit Your Bid
-                        </button>
-                        {% else %}
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#placeBidModal{{ offer.id }}">
-                            Place Bid
-                        </button>
-                        {% endif %}
-                    </div>
-
-                        <!-- Modals -->
-                        {% if offer.user_bid %}
-                        <!-- View/Edit Bid Modal -->
-                        <div class="modal fade" id="bidModal{{ offer.id }}" tabindex="-1" aria-labelledby="bidModalLabel{{ offer.id }}" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="bidModalLabel{{ offer.id }}">Your Bid</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>Amount: <strong>{{ offer.user_bid.amount }}</strong></p>
-                                        <p>Status: <strong>{{ offer.user_bid.get_status_display }}</strong></p>
-                                        <form method="post" action="{% url 'offers:edit_bid' offer.user_bid.id %}">
-                                            {% csrf_token %}
-                                            <div class="mb-3">
-                                                <label for="amount" class="form-label">Edit Bid Amount</label>
-                                                <input type="number" step="0.01" name="amount" id="amount" class="form-control" value="{{ offer.user_bid.amount }}" required>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
-                                        </form>
-                                        <hr>
-                                        <form method="post" action="{% url 'offers:delete_bid' offer.user_bid.id %}">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-danger btn-sm">Remove Bid</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% else %}
-                        <!-- Place Bid Modal -->
-                        <div class="modal fade" id="placeBidModal{{ offer.id }}" tabindex="-1" aria-labelledby="placeBidModalLabel{{ offer.id }}" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="placeBidModalLabel{{ offer.id }}">Place Bid</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form method="post" action="{% url 'offers:place_bid' offer.id %}">
-                                            {% csrf_token %}
-                                            <div class="mb-3">
-                                                <label for="amount" class="form-label">Bid Amount</label>
-                                                <input type="number" step="0.01" name="amount" id="amount" class="form-control" placeholder="Enter your bid" required>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary btn-sm">Submit Bid</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endif %}
-                    </div>
+                    {% if not offer.user_bid %}
+                    <a href="{% url 'offers:place_bid' offer.id %}" class="btn btn-primary btn-sm">Place Bid</a>
+                    {% else %}
+                    <a href="{% url 'offers:edit_bid' offer.user_bid.id %}" class="btn btn-warning btn-sm">Edit Your
+                        Bid</a>
                     {% endif %}
+                    {% endif %}
+
+
                 </div>
             </div>
         </div>
@@ -190,7 +141,8 @@
     </div>
 </div>
 <!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -207,7 +159,7 @@
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                 </form>
             </div>
-            
+
         </div>
     </div>
 </div>
@@ -216,5 +168,3 @@
 <script src="{% static 'js/delete_confirmation.js' %}"></script>
 {% endblock %}
 {% endblock %}
-
-
