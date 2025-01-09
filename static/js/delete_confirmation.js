@@ -1,12 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const deleteForms = document.querySelectorAll(".delete-form");
+    const deleteModal = document.getElementById("deleteConfirmationModal");
+    const deleteForm = document.getElementById("deleteOfferForm");
 
-    deleteForms.forEach(form => {
-        form.addEventListener("submit", function (event) {
-            const confirmMessage = this.querySelector("button[data-confirm]").getAttribute("data-confirm");
-            if (!confirm(confirmMessage)) {
-                event.preventDefault(); // Prevent form submission if the user cancels
-            }
-        });
+    deleteModal.addEventListener("show.bs.modal", function (event) {
+        
+        const button = event.relatedTarget;
+        
+        const action = button.getAttribute("data-action");
+        
+        deleteForm.setAttribute("action", action);
     });
 });
