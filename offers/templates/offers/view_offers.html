@@ -128,8 +128,12 @@
                     {% if not offer.user_bid %}
                     <a href="{% url 'offers:place_bid' offer.id %}" class="btn btn-primary btn-sm">Place Bid</a>
                     {% else %}
-                    <a href="{% url 'offers:edit_bid' offer.user_bid.id %}" class="btn btn-warning btn-sm">Edit Your
-                        Bid</a>
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'offers:edit_bid' offer.user_bid.id %}" class="btn btn-warning btn-sm">Edit Your Bid</a>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" data-action="{% url 'offers:delete_bid' offer.user_bid.id %}">
+                            Delete Bid
+                        </button>
+                    </div>
                     {% endif %}
                     {% endif %}
 
@@ -141,8 +145,7 @@
     </div>
 </div>
 <!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -150,16 +153,15 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete this offer?
+                Are you sure you want to delete this item?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                <form id="deleteOfferForm" method="post" class="d-inline">
+                <form id="deleteForm" method="post" class="d-inline">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                 </form>
             </div>
-
         </div>
     </div>
 </div>
