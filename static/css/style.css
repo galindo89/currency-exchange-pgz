@@ -39,6 +39,19 @@ h1, h2, h3 {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
+/* Hide action buttons by default */
+.card .action-buttons {
+    display: none;
+}
+
+/* Show action buttons on hover */
+.card:hover .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end; /* Align buttons to the right */
+    margin-top: 1rem;
+}
+
 /* General Form Styles */
 form {
     width: 100%; 
