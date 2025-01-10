@@ -11,5 +11,37 @@
         </div>
     </div>
 
-   
+    <!-- Section for Bids with Shared Contact Information -->
+    {% if user_bids_with_shared_contacts.exists %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <h2>Offers You've Bid On</h2>
+            <p class="text-muted">Below are offers where the creator has shared their contact details.</p>
+            <ul class="list-group">
+                {% for bid in user_bids_with_shared_contacts %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>Offer:</strong> {{ bid.offer.amount }} {{ bid.offer.currency }}
+                        <br>
+                        <strong>Exchange Rate:</strong> {{ bid.offer.exchange_rate }}
+                        <br>
+                        <strong>Your Bid:</strong> {{ bid.amount }} {{ bid.currency }}
+                    </div>
+                    <div>
+                        <strong>Contact Info:</strong> <span class="text-success">Shared</span>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% else %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <h2>Your Active Bids</h2>
+            <p class="text-muted">No contact information has been shared yet for your bids.</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

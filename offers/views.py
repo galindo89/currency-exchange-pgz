@@ -116,12 +116,13 @@ def place_bid(request, offer_id):
 def view_bids(request, offer_id):
     offer = get_object_or_404(Offer, id=offer_id, user=request.user)
     bids = offer.bids.all()
+    has_accepted_bids = offer.bids.filter(status='ACCEPTED').exists()
     for bid in bids:
         bid.converted_amount = (
             round(bid.amount / offer.exchange_rate if offer.currency == "USD" else bid.amount * offer.exchange_rate, 2)
         )
 
-    return render(request, 'offers/view_bids.html', {'offer': offer, 'bids': bids})
+    return render(request, 'offers/view_bids.html', {'offer': offer, 'bids': bids, 'has_accepted_bids': has_accepted_bids})
 
 @login_required
 def edit_bid(request, bid_id):
@@ -165,3 +166,16 @@ def delete_bid(request, bid_id):
         bid.delete()
         messages.success(request, "Your bid has been removed.")
         return redirect('offers:view_offers')
+    
+@login_required
+def share_contact(request, bid_id):
+    bid = get_object_or_404(Bid, id=bid_id, offer__user=request.user, status='ACCEPTED')
+
+    if request.method == 'POST':
+        bid.contact_shared = True
+        bid.save()
+     
+        messages.success(request, "Contact details have been shared with the bidder.")
+        return redirect('offers:view_bids', offer_id=bid.offer.id)
+
+    return HttpResponseForbidden()

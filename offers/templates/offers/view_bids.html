@@ -16,6 +16,10 @@
                 <th>Converted Amount</th>
                 <th>Status</th>
                 <th>Actions</th>
+                {% if has_accepted_bids %}
+                <th>Contact</th>
+                {% endif %}
+
             </tr>
         </thead>
         <tbody>
@@ -37,6 +41,16 @@
                     </form>
                     {% else %}
                     <span class="badge bg-secondary">{{ bid.get_status_display }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if bid.status == 'ACCEPTED' and not bid.contact_shared %}
+                        <form method="post" action="{% url 'offers:share_contact' bid.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-info btn-sm">Share Contact</button>
+                        </form>
+                    {% elif bid.contact_shared %}
+                        <span class="text-success">Contact Shared</span>
                     {% endif %}
                 </td>
             </tr>
