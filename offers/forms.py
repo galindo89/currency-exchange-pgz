@@ -1,5 +1,5 @@
 from django import forms
-from .models import Offer, LatestExchangeRate
+from .models import Offer, LatestExchangeRate, Bid
 from .utils import fetch_and_update_exchange_rate
 
 class OfferForm(forms.ModelForm):
@@ -34,3 +34,13 @@ class OfferForm(forms.ModelForm):
             return latest_rate
 
         return exchange_rate
+    
+class BidForm(forms.ModelForm):
+     class Meta:
+        model = Bid
+        fields = ['amount']
+        widgets = {
+            'amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter your bid amount'}),
+        }
+    
+    

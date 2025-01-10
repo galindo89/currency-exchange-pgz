@@ -39,6 +39,30 @@ h1, h2, h3 {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
+
+.card .action-buttons {
+    display: none;
+}
+
+
+.card:hover .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end; 
+    margin-top: 1rem;
+}
+.card .bid-buttons {
+    display: none;
+}
+
+/* Show bid action buttons on hover */
+.card:hover .bid-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-start; /* Align buttons to the left */
+    margin-top: 1rem;
+}
+
 /* General Form Styles */
 form {
     width: 100%; 
@@ -133,6 +157,20 @@ a.btn {
         width: 30%;
         display: block;
     }
+
+    .card .action-buttons {
+        display: flex;
+        justify-content: left ;
+        gap : 0.5rem;
+    }
+
+
+    .card .bid-buttons {
+        display: flex;
+        justify-content: left ;
+        gap : 0.5rem;
+    }
+
   
 }
 
@@ -145,5 +183,8 @@ a.btn {
     h1 {
         font-size: 2rem;
     }
+
+   
+
   
 }
