@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Bids for Offer{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Bids for Offer: {{ offer.amount }} {{ offer.currency }}</h2>
+    <p>Created By: {{ offer.user.username }}</p>
+    <p>Status: {% if offer.is_buying %}Buying{% else %}Selling{% endif %}</p>
+    <p>Exchange Rate: {{ offer.exchange_rate }}</p>
+
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Bid Amount</th>
+                <th>Converted Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bid in bids %}
+            <tr>
+                <td>{{ bid.user.username }}</td>
+                <td>{{ bid.amount }} {{ offer.currency }}</td>
+                <td>{{ bid.converted_amount }}</td>
+                <td>{{ bid.get_status_display }}</td>
+                <td>
+                    {% if bid.status == "AWAITING" %}
+                    <form method="post" action="{% url 'offers:accept_bid' bid.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                    </form>
+                    <form method="post" action="{% url 'offers:reject_bid' bid.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                    </form>
+                    {% else %}
+                    <span class="badge bg-secondary">{{ bid.get_status_display }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No bids found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
