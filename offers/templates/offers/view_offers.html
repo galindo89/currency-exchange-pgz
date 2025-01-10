@@ -121,16 +121,14 @@
                     </div>
                     {% else %}
                     <!-- For Bidders -->
-                    {% if not offer.user_bid %}
-                    <a href="{% url 'offers:place_bid' offer.id %}" class="btn btn-primary btn-sm">Place Bid</a>
-                    {% else %}
-                    <div class="d-flex gap-2">
+                    <div class="bid-buttons">
+                        {% if not offer.user_bid %}
+                        <a href="{% url 'offers:place_bid' offer.id %}" class="btn btn-primary btn-sm">Place Bid</a>
+                        {% else %}
                         <a href="{% url 'offers:edit_bid' offer.user_bid.id %}" class="btn btn-warning btn-sm">Edit Your Bid</a>
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" data-action="{% url 'offers:delete_bid' offer.user_bid.id %}">
-                            Delete Bid
-                        </button>
+                        <a href="{% url 'offers:delete_bid' offer.user_bid.id %}" class="btn btn-danger btn-sm">Delete Your Bid</a>
+                        {% endif %}
                     </div>
-                    {% endif %}
                     {% endif %}
 
 
