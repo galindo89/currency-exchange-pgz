@@ -113,6 +113,17 @@ def place_bid(request, offer_id):
     return render(request, 'offers/place_bid.html', {'form': form, 'offer': offer})
 
 @login_required
+def view_bids(request, offer_id):
+    offer = get_object_or_404(Offer, id=offer_id, user=request.user)
+    bids = offer.bids.all()
+    for bid in bids:
+        bid.converted_amount = (
+            round(bid.amount / offer.exchange_rate if offer.currency == "USD" else bid.amount * offer.exchange_rate, 2)
+        )
+
+    return render(request, 'offers/view_bids.html', {'offer': offer, 'bids': bids})
+
+@login_required
 def edit_bid(request, bid_id):
     bid = get_object_or_404(Bid, id=bid_id, user=request.user)
 

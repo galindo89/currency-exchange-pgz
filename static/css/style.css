@@ -138,6 +138,25 @@ a.btn {
     line-height: 1.5;        
 }
 
+/* Bids table */
+.table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table th, .table td {
+    padding: 10px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f8f9fa;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f2f2f2;
+}
+
 
 /* Mobile Styles */
 @media (max-width: 768px) {
@@ -170,9 +189,24 @@ a.btn {
         justify-content: left ;
         gap : 0.5rem;
     }
+   
 
+    td .btn.btn-danger {
+        
+        margin-top: .5rem;
+    }
+    td .btn {
+        width: 100px; 
+    }
+    
+    td .btn.btn-success,
+    td .btn.btn-danger {
+        text-align: center; 
+    }
   
 }
+
+
 
 /* Tablet and Above */
 @media (min-width: 769px) {
