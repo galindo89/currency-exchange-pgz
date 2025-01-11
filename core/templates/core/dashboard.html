@@ -4,44 +4,84 @@
 
 {% block content %}
 <div class="container mt-4">
-    <div class="row justify-content-center text-center">
-        <div class="col-12">
-            <h1>Welcome, {{ user.username }}!</h1>
-            <p>If you are seeing this, it means you have logged in.</p>
+    <!-- Welcome Section -->
+    <h1 class="text-center mb-4">Welcome, {{ user.username }}!</h1>
+
+
+
+    <!-- Summary Cards Section -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">My Current Offers</h5>
+                    <p class="card-text display-6">{{ my_offers.count }}</p>
+                    <a href="#my-offers" class="btn btn-outline-primary">Jump to My Offers</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 ms-auto">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Bids Placed</h5>
+                    <p class="card-text display-6">{{ my_bids.count }}</p>
+                    <a href="#my-bids" class="btn btn-outline-primary">Jump to Bids I've Made</a>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Section for Bids with Shared Contact Information -->
-    {% if user_bids_with_shared_contacts.exists %}
-    <div class="row mt-4">
-        <div class="col-12">
-            <h2>Offers You've Bid On</h2>
-            <p class="text-muted">Below are offers where the creator has shared their contact details.</p>
-            <ul class="list-group">
-                {% for bid in user_bids_with_shared_contacts %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <strong>Offer:</strong> {{ bid.offer.amount }} {{ bid.offer.currency }}
-                        <br>
-                        <strong>Exchange Rate:</strong> {{ bid.offer.exchange_rate }}
-                        <br>
-                        <strong>Your Bid:</strong> {{ bid.amount }} {{ bid.currency }}
-                    </div>
-                    <div>
-                        <strong>Contact Info:</strong> <span class="text-success">Shared</span>
-                    </div>
-                </li>
-                {% endfor %}
-            </ul>
+    <!-- My Offers Section -->
+    <div id="my-offers" class="mt-5">
+        <h4 class="mb-3">My Offers</h4>
+        <div class="scroll-container d-flex gap-3">
+            {% for offer in my_offers %}
+            <div class="card shadow-sm" style="min-width: 250px;">
+                <div class="card-body">
+                    <h5>{{ offer.amount }} {{ offer.currency }}</h5>
+                    <p>Exchange Rate: <strong>{{ offer.exchange_rate }}</strong></p>
+                    <p>Bids: <strong>{{ offer.bids.count }}</strong></p>
+                    <a href="{% url 'offers:view_bids' offer.id %}" class="btn btn-primary btn-sm">View Bids</a>
+                    <a href="{% url 'offers:edit_offer' offer.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <form method="post" action="{% url 'offers:delete_offer' offer.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </div>
+            </div>
+            {% empty %}
+            <p>No offers created yet.</p>
+            {% endfor %}
         </div>
     </div>
-    {% else %}
-    <div class="row mt-4">
-        <div class="col-12">
-            <h2>Your Active Bids</h2>
-            <p class="text-muted">No contact information has been shared yet for your bids.</p>
+
+    <!-- Offers I've Bid On Section -->
+    <div id="my-bids" class="mt-5">
+        <h4 class="mb-3">Offers I've Bid On</h4>
+        <div class="scroll-container d-flex gap-3">
+            {% for bid in my_bids %}
+            <div class="card shadow-sm" style="min-width: 250px;">
+                <div class="card-body">
+                    <h5>{{ bid.offer.user.username }}</h5>
+                    <h5>{{ bid.offer.amount }} {{ bid.offer.currency }}</h5>
+                    <p>My Bid: <strong>{{ bid.amount }} {{ bid.offer.currency }}</strong></p>
+                    <p>Converted Amount: <strong>{{ bid.converted_amount }}</strong></p>
+                    <p>Status: <strong>{{ bid.get_status_display }}</strong></p>
+                    {% if bid.contact_shared %}
+                    <p class="text-success">
+                        <strong>Contact Shared:</strong> {{ bid.offer.user.email }}
+                    </p>
+                    {% else %}
+                    <p class="text-warning">
+                        Contact not shared yet.
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p>You haven't placed any bids yet.</p>
+            {% endfor %}
         </div>
     </div>
-    {% endif %}
 </div>
 {% endblock %}
