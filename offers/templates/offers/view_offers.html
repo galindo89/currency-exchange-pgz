@@ -125,7 +125,9 @@
                         <a href="{% url 'offers:place_bid' offer.id %}" class="btn btn-primary btn-sm">Place Bid</a>
                         {% else %}
                         <a href="{% url 'offers:edit_bid' offer.user_bid.id %}" class="btn btn-warning btn-sm">Edit Your Bid</a>
-                        <a href="{% url 'offers:delete_bid' offer.user_bid.id %}" class="btn btn-danger btn-sm">Delete Your Bid</a>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" data-action="{% url 'offers:delete_bid' offer.user_bid.id %}">
+                            Delete Your Bid
+                        </button>
                         {% endif %}
                     </div>
                     {% endif %}

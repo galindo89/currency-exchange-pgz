@@ -13,6 +13,13 @@ class OfferForm(forms.ModelForm):
             'rate_type': forms.Select(attrs={'class': 'form-control'}),
             'is_buying': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
+        
+    
+    def clean_amount(self):
+        amount = self.cleaned_data.get('amount')
+        if amount is None or amount <= 0 or amount > 100000:
+            raise forms.ValidationError("Amount must be between 1 and 100,000.")
+        return amount
 
     def clean_exchange_rate(self):
         rate_type = self.cleaned_data.get("rate_type")
@@ -32,8 +39,15 @@ class OfferForm(forms.ModelForm):
         # If rate type is FIXED and exchange_rate is empty, use the latest rate
         if rate_type == "FIXED" and not exchange_rate:
             return latest_rate
+        
+          # Validate exchange_rate if provided
+        if exchange_rate is not None and exchange_rate <= 0:
+            raise forms.ValidationError("Exchange rate must be a positive number.")
+       
 
         return exchange_rate
+    
+    
     
 class BidForm(forms.ModelForm):
      class Meta:
@@ -42,5 +56,26 @@ class BidForm(forms.ModelForm):
         widgets = {
             'amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter your bid amount'}),
         }
+        
+     def __init__(self, *args, **kwargs):
+        self.offer = kwargs.pop('offer', None)  
+        super().__init__(*args, **kwargs)
+
+     def clean_amount(self):
+        amount = self.cleaned_data.get('amount')
+
+       
+        if amount is None or amount <= 0:
+            raise forms.ValidationError("The bid amount must be greater than 0.")
+
+       
+        if self.offer and amount > self.offer.amount:
+            raise forms.ValidationError(f"The bid amount cannot exceed the offer amount ({self.offer.amount}).")
+
+        return amount
+        
+        
+    
+    
     
     

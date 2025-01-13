@@ -18,7 +18,7 @@ class Offer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="offers")
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    exchange_rate = models.DecimalField(max_digits=5, decimal_places=3,null=True, blank=True)
+    exchange_rate = models.DecimalField(max_digits=8, decimal_places=3,null=True, blank=True)
     is_buying = models.BooleanField()
     rate_type = models.CharField(max_length=10, choices=RATE_TYPE_CHOICES, default='FIXED')
     created_at = models.DateTimeField(auto_now_add=True)

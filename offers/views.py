@@ -86,6 +86,7 @@ def delete_offer(request, pk):
         return HttpResponseForbidden()
     if request.method == "POST":
         offer.delete()
+        messages.success(request, "Offer deleted successfully.")
         return redirect('offers:view_offers')
     return render(request, 'offers/delete_offer.html', {'offer': offer})
 
@@ -99,7 +100,7 @@ def place_bid(request, offer_id):
         return redirect('offers:view_offers')
 
     if request.method == "POST":
-        form = BidForm(request.POST)
+        form = BidForm(request.POST,offer=offer)
         if form.is_valid():
             bid = form.save(commit=False)
             bid.offer = offer
@@ -108,7 +109,7 @@ def place_bid(request, offer_id):
             messages.success(request, "Bid placed successfully.")
             return redirect('offers:view_offers')
     else:
-        form = BidForm()
+        form = BidForm(offer=offer)
 
     return render(request, 'offers/place_bid.html', {'form': form, 'offer': offer})
 
@@ -124,20 +125,23 @@ def view_bids(request, offer_id):
 
     return render(request, 'offers/view_bids.html', {'offer': offer, 'bids': bids, 'has_accepted_bids': has_accepted_bids})
 
+   
 @login_required
 def edit_bid(request, bid_id):
     bid = get_object_or_404(Bid, id=bid_id, user=request.user)
+    offer = bid.offer 
 
     if request.method == "POST":
-      
-        amount = request.POST.get('amount')
-        bid.amount = amount
-        bid.save()
-        messages.success(request, "Your bid has been updated.")
-        return redirect('offers:view_offers')
-    
-    
-    return render(request, 'offers/edit_bid.html', {'bid': bid})
+        form = BidForm(request.POST, instance=bid, offer=offer)  
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your bid has been updated successfully.")
+            return redirect('offers:view_offers')
+    else:
+        form = BidForm(instance=bid, offer=offer)
+
+    return render(request, 'offers/edit_bid.html', {'form': form, 'bid': bid})
+
 
 @login_required
 def accept_bid(request, bid_id):
