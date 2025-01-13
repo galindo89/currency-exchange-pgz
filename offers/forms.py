@@ -57,6 +57,25 @@ class BidForm(forms.ModelForm):
             'amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter your bid amount'}),
         }
         
+     def __init__(self, *args, **kwargs):
+        self.offer = kwargs.pop('offer', None)  
+        super().__init__(*args, **kwargs)
+
+     def clean_amount(self):
+        amount = self.cleaned_data.get('amount')
+
+       
+        if amount is None or amount <= 0:
+            raise forms.ValidationError("The bid amount must be greater than 0.")
+
+       
+        if self.offer and amount > self.offer.amount:
+            raise forms.ValidationError(f"The bid amount cannot exceed the offer amount ({self.offer.amount}).")
+
+        return amount
+        
+        
+    
     
     
     

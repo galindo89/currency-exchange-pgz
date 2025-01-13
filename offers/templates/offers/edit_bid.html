@@ -4,13 +4,23 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Edit Bid</h2>
+    <h2>Edit Your Bid</h2>
+
+    {% if form.errors %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ field.label }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
     <form method="post">
         {% csrf_token %}
-        <div class="mb-3">
-            <label for="amount" class="form-label">Bid Amount (in {{ bid.offer.currency }}):</label>
-            <input type="number" step="0.01" name="amount" id="amount" class="form-control" value="{{ bid.amount }}" required>
-        </div>
+        {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Save Changes</button>
         <a href="{% url 'offers:view_offers' %}" class="btn btn-secondary">Cancel</a>
     </form>
