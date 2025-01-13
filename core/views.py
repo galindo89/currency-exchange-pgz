@@ -12,8 +12,10 @@ def home_redirect(request):
 
 @login_required
 def dashboard(request):
-    user_bids_with_shared_contacts = Bid.objects.filter(user=request.user, contact_shared=True)
+    my_offers = Offer.objects.filter(user=request.user)
+    my_bids = Bid.objects.filter(user=request.user)
 
     return render(request, 'core/dashboard.html', {
-        'user_bids_with_shared_contacts': user_bids_with_shared_contacts,
+        'my_offers': my_offers,
+        'my_bids': my_bids,
     })
