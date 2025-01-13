@@ -6,6 +6,7 @@ html, body {
 }
 
 
+
 main {
     flex: 1;
 }
@@ -37,7 +38,16 @@ h1, h2, h3 {
     border-radius: 10px; 
     border: none; 
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+   
+    
 }
+
+.card.shadow-sm.dashboard-card,.card.shadow-sm.offer-card{
+
+    min-width: 300px;
+    min-height: 100%;
+}
+
 
 
 .card .action-buttons {

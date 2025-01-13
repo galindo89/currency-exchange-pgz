@@ -36,10 +36,11 @@
         <h4 class="mb-3">My Offers</h4>
         <div class="scroll-container d-flex gap-3">
             {% for offer in my_offers %}
-            <div class="card shadow-sm" style="min-width: 250px;">
+            <div class="card shadow-sm dashboard-card">
                 <div class="card-body">
-                    <h5>{{ offer.amount }} {{ offer.currency }}</h5>
-                    <p>Exchange Rate: <strong>{{ offer.exchange_rate }}</strong></p>
+                    <h5> Offer ID: {{ offer.id }}</h5>
+                    <p>Amount: <strong>{{ offer.amount }} {{ offer.currency }}</strong></p>
+                    <p>Exchange Rate: <strong>{{ offer.exchange_rate }} €/$</strong></p>
                     <p>Bids: <strong>{{ offer.bids.count }}</strong></p>
                     <a href="{% url 'offers:view_bids' offer.id %}" class="btn btn-primary btn-sm">View Bids</a>
                     <a href="{% url 'offers:edit_offer' offer.id %}" class="btn btn-warning btn-sm">Edit</a>
@@ -60,7 +61,7 @@
         <h4 class="mb-3">Offers I've Bid On</h4>
         <div class="scroll-container d-flex gap-3">
             {% for bid in my_bids %}
-            <div class="card shadow-sm" style="min-width: 250px;">
+            <div class="card shadow-sm dashboard-card">
                 <div class="card-body">
                     <h5>{{ bid.offer.user.username }}</h5>
                     <h5>{{ bid.offer.amount }} {{ bid.offer.currency }}</h5>

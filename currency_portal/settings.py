@@ -148,12 +148,20 @@ WSGI_APPLICATION = 'currency_portal.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    
-'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-    
-    
-}
+# Use SQLite for debugging and development
+
+if DEBUG:  
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+# Use the production database
+else:  
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+    }
 
 if 'test' in sys.argv:
     DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
