@@ -89,40 +89,7 @@
                         </div>
 
 
-                        <!-- Bids Modal -->
-                        <div class="modal fade" id="bidsModal{{ offer.id }}" tabindex="-1"
-                            aria-labelledby="bidsModalLabel{{ offer.id }}" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="bidsModalLabel{{ offer.id }}">Bids for Offer</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        {% for bid in offer.bids.all %}
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>
-                                                {{ bid.user.username }}: {{ bid.amount }} - Status: {{
-                                                bid.get_status_display }}
-                                            </span>
-                                            {% if bid.status == 'AWAITING' %}
-                                            <div>
-                                                <a href="{% url 'offers:accept_bid' bid.id %}"
-                                                    class="btn btn-success btn-sm">Accept</a>
-                                                <a href="{% url 'offers:reject_bid' bid.id %}"
-                                                    class="btn btn-danger btn-sm">Reject</a>
-                                            </div>
-                                            {% endif %}
-                                        </div>
-                                        <hr>
-                                        {% empty %}
-                                        <p>No bids yet.</p>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                       
                     </div>
                     {% else %}
                     <!-- For Bidders -->
@@ -131,15 +98,17 @@
                         <a href="{% url 'offers:place_bid' offer.id %}" class="btn btn-primary btn-sm">Place Bid</a>
                         {% else %}
                         <a href="{% url 'offers:edit_bid' offer.user_bid.id %}" class="btn btn-warning btn-sm">Edit Your Bid</a>
+                        {% if offer.user_bid and offer.user_bid.id %}
                         <button
                             type="button"
                             class="btn btn-danger btn-sm"
                             data-bs-toggle="modal"
                             data-bs-target="#deleteConfirmationModal"
-                            data-action="{% url 'offers:delete_bid' bid.id %}?next={{ request.path }}"
+                            data-action="{% url 'offers:delete_bid' offer.user_bid.id %}?next={{ request.path }}"
                             data-item="bid">
                             Delete Bid
                         </button>
+                        {% endif %}
                         {% endif %}
                     </div>
                     {% endif %}

@@ -31,11 +31,11 @@
                 <td>{{ bid.get_status_display }}</td>
                 <td>
                     {% if bid.status == "AWAITING" %}
-                    <form method="post" action="{% url 'offers:accept_bid' bid.id %}" class="d-inline">
+                    <form method="post" action="{% url 'offers:accept_bid' bid.id %}?next={{request.path}}" class="d-inline">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-success btn-sm">Accept</button>
                     </form>
-                    <form method="post" action="{% url 'offers:reject_bid' bid.id %}" class="d-inline">
+                    <form method="post" action="{% url 'offers:reject_bid' bid.id %}?next={{request.path}}" class="d-inline">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger btn-sm">Reject</button>
                     </form>
