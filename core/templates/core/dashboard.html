@@ -1,5 +1,5 @@
 {%extends 'base.html'%}
-
+{%load static%}
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
@@ -92,31 +92,8 @@
 </div>
 
 </div>
-<script>
-    function showContactDetails(bidId) {
-        const contactDetailsDiv = document.getElementById(`contact-details-${bidId}`);
-        const isVisible = contactDetailsDiv.style.display === 'block';
 
-        if (isVisible) {
-            // Hide the details if currently visible
-            contactDetailsDiv.style.display = 'none';
-        } else {
-            // Fetch and show the details if currently hidden
-            fetch(`/bids/${bidId}/view-contact/`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById(`contact-name-${bidId}`).textContent =
-                            data.contact_details.name || "Not Provided";
-                        document.getElementById(`contact-email-${bidId}`).textContent =
-                            data.contact_details.email || "Not Provided";
-                        contactDetailsDiv.style.display = 'block';
-                    } else {
-                        alert(data.message || 'Unable to fetch contact details.');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-    }
-</script>
+{%block scripts%}
+<script src="{% static 'js/dashboard.js' %}"></script>></script>
+{%endblock%}
 {% endblock %}

@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from offers.models import Offer, LatestExchangeRate, Bid
+from django.views.decorators.csrf import csrf_protect
 
 # Create your views here.
 
@@ -21,18 +22,19 @@ def dashboard(request):
         'my_bids': my_bids,
     })
     
+@csrf_protect
 @login_required
 def view_contact_details(request, bid_id):
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=405)
+
     bid = get_object_or_404(Bid, id=bid_id, user=request.user)
 
-   
     if bid.status == 'ACCEPTED' and bid.contact_shared:
         user = bid.offer.user
         contact_details = {
-            'name': f"{user.first_name} {user.last_name}".strip() or "Not Provided",  
-            'email': user.email  
+            'name': f"{user.first_name} {user.last_name}".strip() or "Not Provided",
+            'email': user.email or "Not Provided",
         }
         return JsonResponse({'success': True, 'contact_details': contact_details})
-
     return JsonResponse({'success': False, 'message': 'Contact details not available.'})
-
