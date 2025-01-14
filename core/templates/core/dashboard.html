@@ -46,8 +46,11 @@
                     <a href="{% url 'offers:edit_offer' offer.id %}" class="btn btn-warning btn-sm">Edit</a>
                     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
                         data-bs-target="#deleteConfirmationModal"
-                        data-action="{% url 'offers:delete_offer' offer.id %}">
+                        data-action="{% url 'offers:delete_offer' offer.id %}?next={{ request.path }}"
+                        data-item="offer">
+
                         Delete
+                        
                     </button>
                 </div>
             </div>
@@ -104,7 +107,7 @@
                             class="btn btn-danger btn-sm w-100"
                             data-bs-toggle="modal"
                             data-bs-target="#deleteConfirmationModal"
-                            data-action="{% url 'offers:delete_bid' bid.id %}"
+                            data-action="{% url 'offers:delete_bid' bid.id %}?next={{ request.path }}"
                             data-item="bid">
                             Delete Bid
                         </button>
