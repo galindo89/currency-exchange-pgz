@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{%extends 'base.html'%}
 
 {% block title %}Dashboard{% endblock %}
 
@@ -6,8 +6,6 @@
 <div class="container mt-4">
     <!-- Welcome Section -->
     <h1 class="text-center mb-4">Welcome, {{ user.username }}!</h1>
-
-
 
     <!-- Summary Cards Section -->
     <div class="row g-4 mb-4">
@@ -57,32 +55,68 @@
     </div>
 
     <!-- Offers I've Bid On Section -->
-    <div id="my-bids" class="mt-5">
-        <h4 class="mb-3">Offers I've Bid On</h4>
-        <div class="scroll-container d-flex gap-3">
-            {% for bid in my_bids %}
-            <div class="card shadow-sm dashboard-card">
-                <div class="card-body">
-                    <h5>{{ bid.offer.user.username }}</h5>
-                    <h5>{{ bid.offer.amount }} {{ bid.offer.currency }}</h5>
-                    <p>My Bid: <strong>{{ bid.amount }} {{ bid.offer.currency }}</strong></p>
-                    <p>Converted Amount: <strong>{{ bid.converted_amount }}</strong></p>
-                    <p>Status: <strong>{{ bid.get_status_display }}</strong></p>
+<div id="my-bids" class="mt-5">
+    <h4 class="mb-3">Offers I've Bid On</h4>
+    <div class="scroll-container d-flex gap-3">
+        {% for bid in my_bids %}
+        <div class="card shadow-sm dashboard-card">
+            <div class="card-body">
+                <h5>{{ bid.offer.user.username }}</h5>
+                <h5>{{ bid.offer.amount }} {{ bid.offer.currency }}</h5>
+                <p>My Bid: <strong>{{ bid.amount }} {{ bid.offer.currency }}</strong></p>
+                <p>Converted Amount: <strong>{{ bid.converted_amount }}</strong></p>
+                <p>Status: <strong>{{ bid.get_status_display }}</strong></p>
+
+                {% if bid.status == 'ACCEPTED' %}
                     {% if bid.contact_shared %}
-                    <p class="text-success">
-                        <strong>Contact Shared:</strong> {{ bid.offer.user.email }}
-                    </p>
+                    <div>
+                        <button class="btn btn-info btn-sm" onclick="showContactDetails('{{ bid.id }}')">
+                            View Contact Details
+                        </button>
+                    </div>
+                    <div id="contact-details-{{ bid.id }}" style="display: none;" class="mt-2">
+                        <p><strong>Name:</strong> <span id="contact-name-{{ bid.id }}"></span></p>
+                        <p><strong>Email:</strong> <span id="contact-email-{{ bid.id }}"></span></p>
+                    </div>
                     {% else %}
-                    <p class="text-warning">
-                        Contact not shared yet.
-                    </p>
+                    <p class="text-warning">Contact not shared yet.</p>
                     {% endif %}
-                </div>
+                
+                {% endif %}
             </div>
-            {% empty %}
-            <p>You haven't placed any bids yet.</p>
-            {% endfor %}
         </div>
+        {% empty %}
+        <p>You haven't placed any bids yet.</p>
+        {% endfor %}
     </div>
 </div>
+
+</div>
+<script>
+    function showContactDetails(bidId) {
+        const contactDetailsDiv = document.getElementById(`contact-details-${bidId}`);
+        const isVisible = contactDetailsDiv.style.display === 'block';
+
+        if (isVisible) {
+            // Hide the details if currently visible
+            contactDetailsDiv.style.display = 'none';
+        } else {
+            // Fetch and show the details if currently hidden
+            fetch(`/bids/${bidId}/view-contact/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById(`contact-name-${bidId}`).textContent =
+                            data.contact_details.name || "Not Provided";
+                        document.getElementById(`contact-email-${bidId}`).textContent =
+                            data.contact_details.email || "Not Provided";
+                        contactDetailsDiv.style.display = 'block';
+                    } else {
+                        alert(data.message || 'Unable to fetch contact details.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    }
+</script>
 {% endblock %}
