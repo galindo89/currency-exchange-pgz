@@ -1,5 +1,7 @@
 {%extends 'base.html'%}
+{% include 'partials/delete_confirmation_modal.html' %}
 {%load static%}
+
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
@@ -42,10 +44,11 @@
                     <p>Bids: <strong>{{ offer.bids.count }}</strong></p>
                     <a href="{% url 'offers:view_bids' offer.id %}" class="btn btn-primary btn-sm">View Bids</a>
                     <a href="{% url 'offers:edit_offer' offer.id %}" class="btn btn-warning btn-sm">Edit</a>
-                    <form method="post" action="{% url 'offers:delete_offer' offer.id %}" class="d-inline">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#deleteConfirmationModal"
+                        data-action="{% url 'offers:delete_offer' offer.id %}">
+                        Delete
+                    </button>
                 </div>
             </div>
             {% empty %}
@@ -55,19 +58,19 @@
     </div>
 
     <!-- Offers I've Bid On Section -->
-<div id="my-bids" class="mt-5">
-    <h4 class="mb-3">Offers I've Bid On</h4>
-    <div class="scroll-container d-flex gap-3">
-        {% for bid in my_bids %}
-        <div class="card shadow-sm dashboard-card">
-            <div class="card-body">
-                <h5>{{ bid.offer.user.username }}</h5>
-                <h5>{{ bid.offer.amount }} {{ bid.offer.currency }}</h5>
-                <p>My Bid: <strong>{{ bid.amount }} {{ bid.offer.currency }}</strong></p>
-                <p>Converted Amount: <strong>{{ bid.converted_amount }}</strong></p>
-                <p>Status: <strong>{{ bid.get_status_display }}</strong></p>
+    <div id="my-bids" class="mt-5">
+        <h4 class="mb-3">Offers I've Bid On</h4>
+        <div class="scroll-container d-flex gap-3">
+            {% for bid in my_bids %}
+            <div class="card shadow-sm dashboard-card">
+                <div class="card-body">
+                    <h5>{{ bid.offer.user.username }}</h5>
+                    <h5>{{ bid.offer.amount }} {{ bid.offer.currency }}</h5>
+                    <p>My Bid: <strong>{{ bid.amount }} {{ bid.offer.currency }}</strong></p>
+                    <p>Converted Amount: <strong>{{ bid.converted_amount }}</strong></p>
+                    <p>Status: <strong>{{ bid.get_status_display }}</strong></p>
 
-                {% if bid.status == 'ACCEPTED' %}
+                    {% if bid.status == 'ACCEPTED' %}
                     {% if bid.contact_shared %}
                     <div>
                         <button class="btn btn-info btn-sm" onclick="showContactDetails('{{ bid.id }}')">
@@ -81,19 +84,22 @@
                     {% else %}
                     <p class="text-warning">Contact not shared yet.</p>
                     {% endif %}
-                
-                {% endif %}
+
+                    {% endif %}
+                </div>
             </div>
+            {% empty %}
+            <p>You haven't placed any bids yet.</p>
+            {% endfor %}
         </div>
-        {% empty %}
-        <p>You haven't placed any bids yet.</p>
-        {% endfor %}
     </div>
-</div>
 
 </div>
+<!-- Delete Confirmation Modal -->
+{% include 'partials/delete_confirmation_modal.html' %}
 
 {%block scripts%}
 <script src="{% static 'js/dashboard.js' %}"></script>></script>
+<script src="{% static 'js/delete_confirmation.js' %}"></script>
 {%endblock%}
 {% endblock %}
