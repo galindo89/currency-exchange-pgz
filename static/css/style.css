@@ -261,6 +261,8 @@ a.btn {
     gap: 1rem;
     padding-bottom: 1rem;
     scroll-snap-type: x mandatory; 
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
 .scroll-container .card {
@@ -272,6 +274,8 @@ a.btn {
     scroll-margin-top: 100px;
     padding-top: 1rem;
     transition: background-color 0.3s ease;
+    
+
 }
 
 #my-offers:target, #my-bids:target {
@@ -279,6 +283,11 @@ a.btn {
     border-radius: 10px;
 }
 
+.dashboard-scroll-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    margin-left: 30px;
+}
 
 /* Tablet and Above */
 @media (min-width: 769px) {
