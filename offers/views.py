@@ -53,6 +53,11 @@ def view_offers(request):
     # Annotate offers with user's bid if exists
     for offer in offers:
         offer.user_bid = offer.bids.filter(user=request.user).first()
+        offer.converted_amount = (
+            round(offer.amount / offer.exchange_rate if offer.currency == "EUR" else offer.amount * offer.exchange_rate, 2)
+        )
+        offer.converted_amount_currency = "EUR" if offer.currency == "USD" else "USD"
+        offer.action = "Buying" if offer.is_buying else "Selling"
 
     return render(request, 'offers/view_offers.html', {'offers': offers})
 
@@ -61,6 +66,10 @@ def edit_offer(request, pk):
     offer = get_object_or_404(Offer, pk=pk)
     if offer.user != request.user:
         return HttpResponseForbidden()
+    
+    if offer.bids.filter(status='ACCEPTED').exists():
+        messages.error(request, "You cannot edit this offer as it has at least one accepted bid.")
+        return redirect('offers:view_offers')
     if request.method == "POST":
         form = OfferForm(request.POST, instance=offer)
         if form.is_valid():
@@ -128,7 +137,7 @@ def view_bids(request, offer_id):
     has_accepted_bids = offer.bids.filter(status='ACCEPTED').exists()
     for bid in bids:
         bid.converted_amount = (
-            round(bid.amount / offer.exchange_rate if offer.currency == "USD" else bid.amount * offer.exchange_rate, 2)
+            round(bid.amount / offer.exchange_rate if offer.currency == "EUR" else bid.amount * offer.exchange_rate, 2)
         )
 
     return render(request, 'offers/view_bids.html', {'offer': offer, 'bids': bids, 'has_accepted_bids': has_accepted_bids})
