@@ -1,28 +1,17 @@
 {% extends "base.html" %}
-
 {% block title %}Place Bid{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
     <h2>Place Bid for {{ offer.amount }} {{ offer.currency }}</h2>
-    {% if form.errors %}
-    <div class="alert alert-danger">
-        <ul>
-            {% for field in form %}
-                {% for error in field.errors %}
-                <li>{{ field.label }}: {{ error }}</li>
-                {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
-            <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Submit Bid</button>
+        <p>
+            Are you sure you want to place a bid for <strong>{{ offer.amount }} {{ offer.currency }}</strong> at an
+            exchange rate of <strong>{{ offer.exchange_rate }}</strong>?
+        </p>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+        <a href="{% url 'offers:view_offers' %}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 {% endblock %}

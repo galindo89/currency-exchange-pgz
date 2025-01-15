@@ -105,18 +105,19 @@ def place_bid(request, offer_id):
         return redirect('offers:view_offers')
 
     if request.method == "POST":
-        form = BidForm(request.POST,offer=offer)
-        if form.is_valid():
-            bid = form.save(commit=False)
-            bid.offer = offer
-            bid.user = request.user
-            bid.save()
-            messages.success(request, "Bid placed successfully.")
-            return redirect('offers:view_offers')
-    else:
-        form = BidForm(offer=offer)
+        bid = Bid(
+            offer=offer,
+            user=request.user,
+            amount=offer.amount,
+            currency=offer.currency,
+            exchange_rate=offer.exchange_rate,
+        )
+        bid.save()
+        messages.success(request, "Bid placed successfully.")
+        return redirect('offers:view_offers')
 
-    return render(request, 'offers/place_bid.html', {'form': form, 'offer': offer})
+    return render(request, 'offers/place_bid.html', {'offer': offer})
+
 
 @login_required
 def view_bids(request, offer_id):
@@ -134,18 +135,29 @@ def view_bids(request, offer_id):
 @login_required
 def edit_bid(request, bid_id):
     bid = get_object_or_404(Bid, id=bid_id, user=request.user)
-    offer = bid.offer 
+    offer = bid.offer
+
+    if bid.status != "AWAITING":
+        messages.error(request, "You cannot edit this bid as it has already been processed.")
+        return redirect('offers:view_offers')
+
+    if offer.rate_type != "FLEXIBLE":
+        messages.error(request, "Bids can only be updated for offers with a flexible exchange rate.")
+        return redirect('offers:view_offers')
 
     if request.method == "POST":
-        form = BidForm(request.POST, instance=bid, offer=offer)  
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Your bid has been updated successfully.")
-            return redirect('offers:view_offers')
-    else:
-        form = BidForm(instance=bid, offer=offer)
+        try:
+            latest_rate = LatestExchangeRate.objects.latest("timestamp").rate
+        except LatestExchangeRate.DoesNotExist:
+            latest_rate = offer.exchange_rate
 
-    return render(request, 'offers/edit_bid.html', {'form': form, 'bid': bid})
+        bid.exchange_rate = latest_rate
+        bid.save()
+        messages.success(request, "Your bid has been updated with the latest exchange rate.")
+        return redirect('offers:view_offers')
+
+    return render(request, 'offers/edit_bid.html', {'bid': bid})
+
 
 
 @login_required

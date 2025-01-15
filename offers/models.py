@@ -59,12 +59,14 @@ class Bid(models.Model):
     offer = models.ForeignKey('Offer', on_delete=models.CASCADE, related_name='bids')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bids')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
+    currency = models.CharField(max_length=3, choices=Offer.CURRENCY_CHOICES)
+    exchange_rate = models.DecimalField(max_digits=8, decimal_places=3)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='AWAITING')
     contact_shared = models.BooleanField(default=False)
-    
+
     class Meta:
-        unique_together = ('user', 'offer')  # Ensure one bid per user per offer
+        unique_together = ('user', 'offer')
 
     def __str__(self):
         return f"Bid by {self.user.username} on {self.offer} - Amount: {self.amount} ({self.get_status_display()})"
