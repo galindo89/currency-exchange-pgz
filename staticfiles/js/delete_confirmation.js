@@ -1,10 +1,16 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const deleteModal = document.getElementById("deleteConfirmationModal");
-    const deleteForm = document.getElementById("deleteForm");
+document.addEventListener('DOMContentLoaded', () => {
+    const deleteConfirmationModal = document.getElementById('deleteConfirmationModal');
+    const deleteForm = document.getElementById('deleteForm');
+    const deleteItemType = document.getElementById('deleteItemType');
 
-    deleteModal.addEventListener("show.bs.modal", function (event) {
+    deleteConfirmationModal.addEventListener('show.bs.modal', (event) => {
         const button = event.relatedTarget; 
-        const actionUrl = button.getAttribute("data-action"); 
-        deleteForm.setAttribute("action", actionUrl); 
+        const actionUrl = button.getAttribute('data-action'); 
+        const itemType = button.getAttribute('data-item'); 
+       
+        deleteForm.setAttribute('action', actionUrl);
+
+       
+        deleteItemType.textContent = itemType || 'item'; 
     });
 });

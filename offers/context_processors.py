@@ -16,5 +16,5 @@ def exchange_rate_processor(request):
             latest_rate = "N/A"
 
     return {
-        "exchange_rate": latest_rate
+        "exchange_rate": round(latest_rate,3)
     }

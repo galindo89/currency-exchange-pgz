@@ -84,10 +84,15 @@ def delete_offer(request, pk):
     offer = get_object_or_404(Offer, pk=pk)
     if offer.user != request.user:
         return HttpResponseForbidden()
+
     if request.method == "POST":
         offer.delete()
         messages.success(request, "Offer deleted successfully.")
-        return redirect('offers:view_offers')
+        
+        
+        next_url = request.GET.get('next', 'offers:view_offers')  
+        return redirect(next_url)
+
     return render(request, 'offers/delete_offer.html', {'offer': offer})
 
 @login_required
@@ -149,19 +154,26 @@ def accept_bid(request, bid_id):
     if bid.offer.user != request.user:
         return HttpResponseForbidden()
 
-    bid.status = "ACCEPTED"
-    bid.save()
-    messages.success(request, "You have accepted the bid.")
-    return redirect('offers:view_offers')
+    if request.method == "POST":
+        bid.status = "ACCEPTED"
+        bid.save()
+        messages.success(request, "You have accepted the bid.")
+        next_url = request.GET.get('next', 'offers:view_offers')
+        return redirect(next_url)
 
 @login_required
 def reject_bid(request, bid_id):
     bid = get_object_or_404(Bid, id=bid_id)
     if request.user != bid.offer.user:
-        return HttpResponseForbidden()     
-    bid.status = 'REJECTED'
-    bid.save()
-    return redirect('offers:view_offers')
+        return HttpResponseForbidden()
+
+    if request.method == "POST":
+        bid.status = "REJECTED"
+        bid.save()
+        messages.success(request, "You have rejected the bid.")      
+        next_url = request.GET.get('next', 'offers:view_offers') 
+        return redirect(next_url)
+    
 @login_required
 def delete_bid(request, bid_id):
     bid = get_object_or_404(Bid, id=bid_id, user=request.user)
@@ -169,7 +181,12 @@ def delete_bid(request, bid_id):
     if request.method == "POST":
         bid.delete()
         messages.success(request, "Your bid has been removed.")
-        return redirect('offers:view_offers')
+        
+       
+        next_url = request.GET.get('next', 'dashboard')  
+        return redirect(next_url)
+
+    return redirect('dashboard')  
     
 @login_required
 def share_contact(request, bid_id):
