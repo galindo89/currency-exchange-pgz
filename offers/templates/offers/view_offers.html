@@ -32,7 +32,7 @@
             <select name="rate_type" id="rate_type" class="form-select form-select-sm me-2">
                 <option value="">All Rates</option>
                 <option value="FIXED" {% if request.GET.rate_type == 'FIXED' %}selected{% endif %}>Fixed</option>
-                <option value="VARIABLE" {% if request.GET.rate_type == 'VARIABLE' %}selected{% endif %}>Flexible</option>
+                <option value="FLEXIBLE" {% if request.GET.rate_type == 'FLEXIBLE' %}selected{% endif %}>Flexible</option>
             </select>
             <button type="submit" class="btn btn-primary btn-sm w-100 w-md-auto">Filter</button>
             <a href="{% url 'offers:view_offers' %}" class="btn btn-secondary btn-sm w-100 w-md-auto">Reset</a>
