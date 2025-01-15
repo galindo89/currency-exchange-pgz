@@ -41,8 +41,8 @@
                     <p>Offer: <strong>{{ offer.amount }} {{ offer.currency }}</strong></p>
                     <p>Action: <strong>{{offer.action}} {{offer.currency}}</strong></p>
                     <p>Exchange Rate: <strong>{{ offer.exchange_rate }} €/$</strong></p>
-                    <p>Exchange amount: <strong>{{offer.converted_amount}} {{offer.converted_amount_currency}}</strong></p>
-                    <p>Exchange type: <strong>{{ offer.get_rate_type_display }}</strong></p>
+                    <p>Exchange Amount: <strong>{{offer.converted_amount}} {{offer.converted_amount_currency}}</strong></p>
+                    <p>Rate Type: <strong>{{ offer.get_rate_type_display }}</strong></p>
                     <p>Bids: <strong>{{ offer.bids.count }}</strong></p>
                     <a href="{% url 'offers:view_bids' offer.id %}" class="btn btn-primary btn-sm">View Bids</a>
                     <a href="{% url 'offers:edit_offer' offer.id %}" class="btn btn-warning btn-sm">Edit</a>
@@ -77,7 +77,8 @@
                         <p>Offer:<strong> {{ bid.offer.amount }} {{ bid.offer.currency }}</strong></p>
                         <p>My Bid: <strong>{{ bid.amount }} {{ bid.currency }}</strong></p>
                         <p>Exchange Rate: <strong>{{ bid.exchange_rate }} €/$</strong></p>
-                        <p>Exchange amount: <strong>{{bid.converted_amount}} {{bid.converted_amount_currency}}</strong></p>
+                        <p>Exchange Amount: <strong>{{bid.converted_amount}} {{bid.converted_amount_currency}}</strong></p>
+                        <p>Rate Type: <strong>{{ bid.offer.get_rate_type_display }}</strong></p>
                         <p>Status: <strong>{{ bid.get_status_display }}</strong></p>
     
                         {% if bid.status == 'ACCEPTED' %}
@@ -104,8 +105,8 @@
                         <!-- Edit Bid Button -->
                         {% if bid.status == "AWAITING" %}
                          
-                        <a href="{% url 'offers:edit_bid' bid.id %}" class="btn btn-warning btn-sm w-100">
-                            Edit Bid
+                        <a href="{% url 'offers:edit_bid' bid.id %}?next={{ request.path }}" class="btn btn-warning btn-sm w-100">
+                            Update Bid
                         </a>
                         {% endif %}
     

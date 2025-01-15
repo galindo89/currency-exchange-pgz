@@ -147,14 +147,17 @@ def view_bids(request, offer_id):
 def edit_bid(request, bid_id):
     bid = get_object_or_404(Bid, id=bid_id, user=request.user)
     offer = bid.offer
+    next_url = request.GET.get('next', None)
 
     if bid.status != "AWAITING":
         messages.error(request, "You cannot edit this bid as it has already been processed.")
-        return redirect('offers:view_offers')
+        return redirect(next_url or 'offers:view_offers')
+
 
     if offer.rate_type != "FLEXIBLE":
         messages.error(request, "Bids can only be updated for offers with a flexible exchange rate.")
-        return redirect('offers:view_offers')
+        return redirect(next_url or 'offers:view_offers')
+
 
     if request.method == "POST":
         try:
@@ -165,9 +168,10 @@ def edit_bid(request, bid_id):
         bid.exchange_rate = latest_rate
         bid.save()
         messages.success(request, "Your bid has been updated with the latest exchange rate.")
-        return redirect('offers:view_offers')
+        return redirect(next_url or 'offers:view_offers')
 
-    return render(request, 'offers/edit_bid.html', {'bid': bid})
+
+    return render(request, 'offers/edit_bid.html', {'bid': bid, 'next': next_url, 'offer':offer})
 
 
 
