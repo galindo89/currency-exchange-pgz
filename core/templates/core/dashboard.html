@@ -97,9 +97,12 @@
                     <!-- Buttons Section -->
                     <div class="mt-3 d-flex gap-2">
                         <!-- Edit Bid Button -->
+                        {% if bid.status == "AWAITING" %}
+                         
                         <a href="{% url 'offers:edit_bid' bid.id %}" class="btn btn-warning btn-sm w-100">
                             Edit Bid
                         </a>
+                        {% endif %}
     
                         <!-- Delete Bid Button -->
                         <button

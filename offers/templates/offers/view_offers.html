@@ -97,7 +97,10 @@
                         {% if not offer.user_bid %}
                         <a href="{% url 'offers:place_bid' offer.id %}" class="btn btn-primary btn-sm">Place Bid</a>
                         {% else %}
+                         <!-- Show Edit Bid Button Only if Status is AWAITING -->
+                        {% if offer.user_bid.status == "AWAITING" %}
                         <a href="{% url 'offers:edit_bid' offer.user_bid.id %}" class="btn btn-warning btn-sm">Edit Your Bid</a>
+                        {% endif %}
                         {% if offer.user_bid and offer.user_bid.id %}
                         <button
                             type="button"
