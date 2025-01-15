@@ -25,6 +25,7 @@ def create_offer(request):
                 offer.exchange_rate = latest_rate
 
             offer.save()
+            messages.success(request, "Offer created successfully.")
             return redirect('offers:view_offers')
     else:
         form = OfferForm()
@@ -73,6 +74,7 @@ def edit_offer(request, pk):
                 updated_offer.exchange_rate = latest_rate
 
             updated_offer.save()
+            messages.success(request, "Offer updated successfully.")
             return redirect('offers:view_offers')
     else:
         form = OfferForm(instance=offer)
