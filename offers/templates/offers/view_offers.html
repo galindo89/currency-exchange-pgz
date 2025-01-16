@@ -1,15 +1,18 @@
 {% extends "base.html" %}
 {%load static%}
-
 {% block title %}View Offers{% endblock %}
-
 {% block content %}
 <div class="container mt-5">
     <!-- Header with Create Offer Button -->
     <!-- Create Offer Button -->
     {% if user.is_authenticated %}
-    <div class="d-flex justify-content-end mb-3">
-        <a href="{% url 'offers:create_offer' %}?next={{ request.path }}" class="btn btn-primary w-100 w-md-auto">Create Offer</a>
+    <div 
+        class="d-flex justify-content-end mb-3">
+        <a 
+         href="{% url 'offers:create_offer' %}?next={{ request.path }}" 
+         class="btn btn-primary w-100 w-md-auto" aria-label="Create a new offer">
+         Create Offer
+        </a>
     </div>
     {% endif %}
 
@@ -35,7 +38,7 @@
                 <option value="FLEXIBLE" {% if request.GET.rate_type == 'FLEXIBLE' %}selected{% endif %}>Flexible</option>
             </select>
             <button type="submit" class="btn btn-primary btn-sm w-100 w-md-auto">Filter</button>
-            <a href="{% url 'offers:view_offers' %}" class="btn btn-secondary btn-sm w-100 w-md-auto">Reset</a>
+            <a href="{% url 'offers:view_offers' %}" class="btn btn-secondary btn-sm w-100 w-md-auto" aria-label="Reset filter values">Reset</a>
         </form>
     </div>
 
@@ -54,8 +57,6 @@
                     <p>Exchange Type: <strong>{{offer.get_rate_type_display}}</strong></p>
                     <p>Created On: <strong>{{offer.created_at|date:"M d, Y"}}</strong></p>
 
-
-
                     <!-- Bid Status for Logged-in User -->
                     {% if offer.user_bid %}
                     <p class="card-text">
@@ -70,10 +71,16 @@
                         <h6>Bids:</h6>
                         <p><strong>{{ offer.bids.count }}</strong> Bids Received</p>
                         <div class="action-buttons">
-                            <a href="{% url 'offers:view_bids' offer.id %}?next={{ request.path }}" class="btn btn-primary btn-sm">View Bids</a>
-
-                            <a href="{% url 'offers:edit_offer' offer.id %}?next={{ request.path }}" class="btn btn-warning btn-sm">
-                                Edit Offer
+                            <a
+                             href="{% url 'offers:view_bids' offer.id %}?next={{ request.path }}"
+                             class="btn btn-primary btn-sm"
+                             aria-label="View list of bids for offer">
+                             View Bids
+                            </a>
+                            <a href="{% url 'offers:edit_offer' offer.id %}?next={{ request.path }}"
+                               class="btn btn-warning btn-sm"
+                               aria-label="Edit offer">                               
+                               Edit Offer
                             </a>
                             <button
                                 type="button"
@@ -85,26 +92,28 @@
                                 Delete Offer
                             </button>
                         </div>
-
-
-                       
                     </div>
                     {% else %}
+
                     <!-- For Bidders -->
+
                     <div class="bid-buttons">
                         {% if not offer.user_bid %}
                         <!-- Place Bid Button -->
-                        <a href="{% url 'offers:place_bid' offer.id %}?next={{ request.path }}" class="btn btn-primary btn-sm">
-                            Place Bid
-                        </a>
+                        <a href="{% url 'offers:place_bid' offer.id %}?next={{ request.path }}" 
+                           class="btn btn-primary btn-sm"
+                           aria-label="Place a bid for the offer">
+                           Place Bid
+                         </a>
                         {% else %}
                         <!-- Show Edit Bid Button Only if Status is AWAITING -->
                         {% if offer.user_bid.status == "AWAITING" %}
-                        <a href="{% url 'offers:edit_bid' offer.user_bid.id %}?next={{ request.path }}" class="btn btn-warning btn-sm">
-                            Edit Your Bid
+                        <a href="{% url 'offers:edit_bid' offer.user_bid.id %}?next={{ request.path }}" 
+                           class="btn btn-warning btn-sm"
+                           aria-label="Edit your bid">
+                           Edit Your Bid
                         </a>
-                        {% endif %}                
-                     
+                        {% endif %}
                         {% endif %}
                         {% if offer.user_bid and offer.user_bid.id %}
                         <button
@@ -117,11 +126,8 @@
                             Delete Bid
                         </button>
                         {% endif %}
-                        
                     </div>
                     {% endif %}
-
-
                 </div>
             </div>
         </div>
@@ -130,7 +136,6 @@
 </div>
 <!-- Delete Confirmation Modal -->
 {% include 'partials/delete_confirmation_modal.html' %}
-
 {% block scripts %}
 <script src="{% static 'js/delete_confirmation.js' %}"></script>
 {% endblock %}

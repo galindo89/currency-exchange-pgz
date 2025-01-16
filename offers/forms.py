@@ -1,81 +1,116 @@
+"""
+Forms for the Offers app.
+Contains forms for creating and validating offers and bids.
+"""
+
 from django import forms
 from .models import Offer, LatestExchangeRate, Bid
 from .utils import fetch_and_update_exchange_rate
 
+
 class OfferForm(forms.ModelForm):
+    """
+    A form for creating and updating Offer objects.
+    """
     class Meta:
         model = Offer
-        fields = ['currency', 'amount', 'exchange_rate', 'is_buying', 'rate_type']
+        fields = [
+            'currency', 'amount', 'exchange_rate', 'is_buying', 'rate_type']
         widgets = {
-            'currency': forms.Select(attrs={'class': 'form-control'}),
-            'amount': forms.NumberInput(attrs={'class': 'form-control'}),
-            'exchange_rate': forms.NumberInput(attrs={'class': 'form-control'}),
-            'rate_type': forms.Select(attrs={'class': 'form-control'}),
-            'is_buying': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'currency': forms.Select(attrs={
+                'class': 'form-control',
+                'placeholder': 'Select currency'
+            }),
+            'amount': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter amount to buy or sell'}),
+            'exchange_rate': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Leave empty for latest rate'}),
+            'rate_type': forms.Select(attrs={
+                'class': 'form-control',
+                'placeholder': 'Select rate type'}),
+            'is_buying': forms.CheckboxInput(attrs={
+                'class': 'form-check-input'}),
         }
-        
-    
+        labels = {
+            'currency': 'Currency',
+            'amount': 'Amount',
+            'exchange_rate': 'Exchange Rate',
+            'is_buying': 'Click here if you are buying the desired currency',
+            'rate_type': 'Rate Type',
+            }
+
     def clean_amount(self):
+        """
+        Validates the amount field to ensure it is positive and within the
+        allowed range.
+        """
         amount = self.cleaned_data.get('amount')
         if amount is None or amount <= 0 or amount > 100000:
-            raise forms.ValidationError("Amount must be between 1 and 100,000.")
+            raise forms.ValidationError(
+                "Amount must be between 1 and 100,000.")
         return amount
 
     def clean_exchange_rate(self):
+        """
+        Validates or sets the exchange rate field based on the rate type.
+        """
         rate_type = self.cleaned_data.get("rate_type")
         exchange_rate = self.cleaned_data.get("exchange_rate")
 
-        # Try to fetch the latest rate from the database
         try:
             latest_rate = LatestExchangeRate.objects.latest("timestamp").rate
         except LatestExchangeRate.DoesNotExist:
-            # If no rate exists, fetch it from the API
             latest_rate = fetch_and_update_exchange_rate()
 
-        # If rate type is FLEXIBLE, always use the latest rate
         if rate_type == "FLEXIBLE":
             return latest_rate
 
-        # If rate type is FIXED and exchange_rate is empty, use the latest rate
         if rate_type == "FIXED" and not exchange_rate:
             return latest_rate
-        
-          # Validate exchange_rate if provided
+
         if exchange_rate is not None and exchange_rate <= 0:
-            raise forms.ValidationError("Exchange rate must be a positive number.")
-       
+            raise forms.ValidationError(
+                "Exchange rate must be a positive number.")
 
         return exchange_rate
-    
-    
-    
+
+
 class BidForm(forms.ModelForm):
-     class Meta:
+    """
+    A form for creating and validating bids on offers.
+    """
+    class Meta:
         model = Bid
         fields = ['amount']
         widgets = {
-            'amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter your bid amount'}),
+            'amount': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter your bid amount'}),
         }
-        
-     def __init__(self, *args, **kwargs):
-        self.offer = kwargs.pop('offer', None)  
+
+    def __init__(self, *args, **kwargs):
+        """
+        Initializes the form and extracts the offer from kwargs.
+        """
+        self.offer = kwargs.pop('offer', None)
         super().__init__(*args, **kwargs)
 
-     def clean_amount(self):
+    def clean_amount(self):
+        """
+        Validates the bid amount to ensure it is positive and does not exceed
+        the offer amount.
+        """
         amount = self.cleaned_data.get('amount')
 
-       
         if amount is None or amount <= 0:
-            raise forms.ValidationError("The bid amount must be greater than 0.")
+            raise forms.ValidationError("The bid amount must be greater \
+            than 0.")
 
-       
         if self.offer and amount > self.offer.amount:
-            raise forms.ValidationError(f"The bid amount cannot exceed the offer amount ({self.offer.amount}).")
+            raise forms.ValidationError(
+                f"The bid amount cannot exceed the offer amount \
+                ({self.offer.amount}).")
 
         return amount
-        
-        
-    
-    
-    
-    
