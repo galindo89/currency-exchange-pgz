@@ -9,7 +9,7 @@
     <!-- Create Offer Button -->
     {% if user.is_authenticated %}
     <div class="d-flex justify-content-end mb-3">
-        <a href="{% url 'offers:create_offer' %}" class="btn btn-primary w-100 w-md-auto">Create Offer</a>
+        <a href="{% url 'offers:create_offer' %}?next={{ request.path }}" class="btn btn-primary w-100 w-md-auto">Create Offer</a>
     </div>
     {% endif %}
 
@@ -70,9 +70,9 @@
                         <h6>Bids:</h6>
                         <p><strong>{{ offer.bids.count }}</strong> Bids Received</p>
                         <div class="action-buttons">
-                            <a href="{% url 'offers:view_bids' offer.id %}" class="btn btn-primary btn-sm">View Bids</a>
+                            <a href="{% url 'offers:view_bids' offer.id %}?next={{ request.path }}" class="btn btn-primary btn-sm">View Bids</a>
 
-                            <a href="{% url 'offers:edit_offer' offer.id %}" class="btn btn-warning btn-sm">
+                            <a href="{% url 'offers:edit_offer' offer.id %}?next={{ request.path }}" class="btn btn-warning btn-sm">
                                 Edit Offer
                             </a>
                             <button
@@ -94,13 +94,13 @@
                     <div class="bid-buttons">
                         {% if not offer.user_bid %}
                         <!-- Place Bid Button -->
-                        <a href="{% url 'offers:place_bid' offer.id %}" class="btn btn-primary btn-sm">
+                        <a href="{% url 'offers:place_bid' offer.id %}?next={{ request.path }}" class="btn btn-primary btn-sm">
                             Place Bid
                         </a>
                         {% else %}
                         <!-- Show Edit Bid Button Only if Status is AWAITING -->
                         {% if offer.user_bid.status == "AWAITING" %}
-                        <a href="{% url 'offers:edit_bid' offer.user_bid.id %}" class="btn btn-warning btn-sm">
+                        <a href="{% url 'offers:edit_bid' offer.user_bid.id %}?next={{ request.path }}" class="btn btn-warning btn-sm">
                             Edit Your Bid
                         </a>
                         {% endif %}                

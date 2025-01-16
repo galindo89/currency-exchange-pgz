@@ -44,8 +44,8 @@
                     <p>Exchange Amount: <strong>{{offer.converted_amount}} {{offer.converted_amount_currency}}</strong></p>
                     <p>Rate Type: <strong>{{ offer.get_rate_type_display }}</strong></p>
                     <p>Bids: <strong>{{ offer.bids.count }}</strong></p>
-                    <a href="{% url 'offers:view_bids' offer.id %}" class="btn btn-primary btn-sm">View Bids</a>
-                    <a href="{% url 'offers:edit_offer' offer.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'offers:view_bids' offer.id %}?next={{ request.path }}" class="btn btn-primary btn-sm">View Bids</a>
+                    <a href="{% url 'offers:edit_offer' offer.id %}?next={{ request.path }}" class="btn btn-warning btn-sm">Edit</a>
                     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
                         data-bs-target="#deleteConfirmationModal"
                         data-action="{% url 'offers:delete_offer' offer.id %}?next={{ request.path }}"

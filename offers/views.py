@@ -11,6 +11,7 @@ from .forms import BidForm
 
 @login_required
 def create_offer(request):
+    next_url = request.GET.get('next', 'offers:view_offers')
     if request.method == "POST":
         form = OfferForm(request.POST)
         if form.is_valid():
@@ -26,7 +27,7 @@ def create_offer(request):
 
             offer.save()
             messages.success(request, "Offer created successfully.")
-            return redirect('offers:view_offers')
+            return redirect(next_url)
     else:
         form = OfferForm()
     return render(request, 'offers/create_offer.html', {'form': form})
@@ -64,6 +65,7 @@ def view_offers(request):
 @login_required
 def edit_offer(request, pk):
     offer = get_object_or_404(Offer, pk=pk)
+    next_url = request.GET.get('next', 'offers:view_offers')
     if offer.user != request.user:
         return HttpResponseForbidden()
     
@@ -84,7 +86,7 @@ def edit_offer(request, pk):
 
             updated_offer.save()
             messages.success(request, "Offer updated successfully.")
-            return redirect('offers:view_offers')
+            return redirect(next_url)
     else:
         form = OfferForm(instance=offer)
     return render(request, 'offers/edit_offer.html', {'form': form})
@@ -110,10 +112,11 @@ def delete_offer(request, pk):
 def place_bid(request, offer_id):
     offer = get_object_or_404(Offer, id=offer_id)
     existing_bid = Bid.objects.filter(offer=offer, user=request.user).first()
+    next_url = request.GET.get('next', 'offers:view_offers')
 
     if existing_bid:
         messages.error(request, "You have already placed a bid for this offer.")
-        return redirect('offers:view_offers')
+        return redirect( next_url)
 
     if request.method == "POST":
         bid = Bid(
@@ -125,7 +128,7 @@ def place_bid(request, offer_id):
         )
         bid.save()
         messages.success(request, "Bid placed successfully.")
-        return redirect('offers:view_offers')
+        return redirect(next_url)
 
     return render(request, 'offers/place_bid.html', {'offer': offer})
 
@@ -140,6 +143,7 @@ def view_bids(request, offer_id):
     bids = offer.bids.all()
     has_accepted_bids = offer.bids.filter(status='ACCEPTED').exists()
     has_awaiting_bids = offer.bids.filter(status='AWAITING').exists()
+    bids_exist = offer.bids.exists()
     for bid in bids:
         bid.converted_amount = (
             round(bid.amount / bid.exchange_rate if bid.offer.currency == "EUR" else bid.amount * bid.exchange_rate, 2)
@@ -148,23 +152,23 @@ def view_bids(request, offer_id):
         bid.action = "Selling" if bid.offer.is_buying else "Buying"
        
 
-    return render(request, 'offers/view_bids.html', {'offer': offer, 'bids': bids, 'has_accepted_bids': has_accepted_bids, 'has_awaiting_bids': has_awaiting_bids})
+    return render(request, 'offers/view_bids.html', {'offer': offer, 'bids': bids, 'has_accepted_bids': has_accepted_bids, 'has_awaiting_bids': has_awaiting_bids, 'bids_exist': bids_exist})
 
    
 @login_required
 def edit_bid(request, bid_id):
     bid = get_object_or_404(Bid, id=bid_id, user=request.user)
     offer = bid.offer
-    next_url = request.GET.get('next', None)
+    next_url = request.GET.get('next','offers:view_offers')
 
     if bid.status != "AWAITING":
         messages.error(request, "You cannot edit this bid as it has already been processed.")
-        return redirect(next_url or 'offers:view_offers')
+        return redirect(next_url)
 
 
     if offer.rate_type != "FLEXIBLE":
         messages.error(request, "Bids can only be updated for offers with a flexible exchange rate.")
-        return redirect(next_url or 'offers:view_offers')
+        return redirect(next_url)
 
 
     if request.method == "POST":
@@ -176,7 +180,7 @@ def edit_bid(request, bid_id):
         bid.exchange_rate = latest_rate
         bid.save()
         messages.success(request, "Your bid has been updated with the latest exchange rate.")
-        return redirect(next_url or 'offers:view_offers')
+        return redirect(next_url)
 
 
     return render(request, 'offers/edit_bid.html', {'bid': bid, 'next': next_url, 'offer':offer})
@@ -212,16 +216,15 @@ def reject_bid(request, bid_id):
 @login_required
 def delete_bid(request, bid_id):
     bid = get_object_or_404(Bid, id=bid_id, user=request.user)
+    next_url = request.GET.get('next', 'offers:view_offers')
 
     if request.method == "POST":
         bid.delete()
         messages.success(request, "Your bid has been removed.")
-        
-       
-        next_url = request.GET.get('next', 'dashboard')  
+                      
         return redirect(next_url)
 
-    return redirect('dashboard')  
+    return redirect(next_url)  
     
 @login_required
 def share_contact(request, bid_id):
