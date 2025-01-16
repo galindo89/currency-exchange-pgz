@@ -21,7 +21,9 @@
                         <th>Bid Action</th>
                         <th>Exchange Rate</th>
                         <th>Exchange Amount</th>
+                        {% if bids_exist %}
                         <th>Status</th>
+                        {% endif %}
                         {% if has_awaiting_bids %}
                         <th>Actions</th>
                         {% endif %}
