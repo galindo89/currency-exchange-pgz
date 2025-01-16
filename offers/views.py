@@ -133,14 +133,22 @@ def place_bid(request, offer_id):
 @login_required
 def view_bids(request, offer_id):
     offer = get_object_or_404(Offer, id=offer_id, user=request.user)
+    offer.action = "Buying" if offer.is_buying else "Selling"
+    offer.converted_amount = (round(offer.amount / offer.exchange_rate if offer.currency == "EUR" else offer.amount * offer.exchange_rate, 2))
+    offer.converted_amount_currency = "EUR" if offer.currency == "USD" else "USD"
+   
     bids = offer.bids.all()
     has_accepted_bids = offer.bids.filter(status='ACCEPTED').exists()
+    has_awaiting_bids = offer.bids.filter(status='AWAITING').exists()
     for bid in bids:
         bid.converted_amount = (
-            round(bid.amount / offer.exchange_rate if offer.currency == "EUR" else bid.amount * offer.exchange_rate, 2)
+            round(bid.amount / bid.exchange_rate if bid.offer.currency == "EUR" else bid.amount * bid.exchange_rate, 2)
         )
+        bid.converted_amount_currency = "EUR" if offer.currency == "USD" else "USD"
+        bid.action = "Selling" if bid.offer.is_buying else "Buying"
+       
 
-    return render(request, 'offers/view_bids.html', {'offer': offer, 'bids': bids, 'has_accepted_bids': has_accepted_bids})
+    return render(request, 'offers/view_bids.html', {'offer': offer, 'bids': bids, 'has_accepted_bids': has_accepted_bids, 'has_awaiting_bids': has_awaiting_bids})
 
    
 @login_required

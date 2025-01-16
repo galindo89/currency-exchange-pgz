@@ -3,63 +3,83 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Bids for Offer: {{ offer.amount }} {{ offer.currency }}</h2>
-    <p>Created By: {{ offer.user.username }}</p>
-    <p>Status: {% if offer.is_buying %}Buying{% else %}Selling{% endif %}</p>
-    <p>Exchange Rate: {{ offer.exchange_rate }}</p>
+    <div class="card p-4 shadow-lg">
+        <h2 class="mb-4">Bids for Offer ID {{ offer.id }}</h2>        
+        <p><strong>Created By:</strong> {{ offer.user.username }}</p>
+        <p><strong>Offer: </strong>{{offer.amount}} {{offer.currency}}</p>
+        <p><strong>Action:</strong> {{offer.action}}</p>
+        <p><strong>Current Exchange Rate:</strong> {{ offer.exchange_rate }} €/$</p>
+        <p><strong>Current Exchange Amount: </strong>{{offer.converted_amount}} {{offer.converted_amount_currency}}</p>
+        <p><strong>Rate Type: </strong>{{offer.get_rate_type_display}}</p>
 
-    <table class="table table-striped mt-4">
-        <thead>
-            <tr>
-                <th>User</th>
-                <th>Bid Amount</th>
-                <th>Converted Amount</th>
-                <th>Status</th>
-                <th>Actions</th>
-                {% if has_accepted_bids %}
-                <th>Contact</th>
-                {% endif %}
-
-            </tr>
-        </thead>
-        <tbody>
-            {% for bid in bids %}
-            <tr>
-                <td>{{ bid.user.username }}</td>
-                <td>{{ bid.amount }} {{ offer.currency }}</td>
-                <td>{{ bid.converted_amount }}</td>
-                <td>{{ bid.get_status_display }}</td>
-                <td>
-                    {% if bid.status == "AWAITING" %}
-                    <form method="post" action="{% url 'offers:accept_bid' bid.id %}?next={{request.path}}" class="d-inline">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-success btn-sm">Accept</button>
-                    </form>
-                    <form method="post" action="{% url 'offers:reject_bid' bid.id %}?next={{request.path}}" class="d-inline">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger btn-sm">Reject</button>
-                    </form>
-                    {% else %}
-                    <span class="badge bg-secondary">{{ bid.get_status_display }}</span>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if bid.status == 'ACCEPTED' and not bid.contact_shared %}
-                        <form method="post" action="{% url 'offers:share_contact' bid.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-info btn-sm">Share Contact</button>
-                        </form>
-                    {% elif bid.contact_shared %}
-                        <span class="text-success">Contact Shared</span>
-                    {% endif %}
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="5" class="text-center">No bids found.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <div class="table-responsive mt-4">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Bidder</th>
+                        <th>Bid Amount</th>
+                        <th>Bid Action</th>
+                        <th>Exchange Rate</th>
+                        <th>Exchange Amount</th>
+                        <th>Status</th>
+                        {% if has_awaiting_bids %}
+                        <th>Actions</th>
+                        {% endif %}
+                        {% if has_accepted_bids %}
+                        <th>Contact</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bid in bids %}
+                    <tr>
+                        <td>{{ bid.user.username }}</td>
+                        <td>{{ bid.amount }} {{ bid.offer.currency }}</td>
+                        <td>{{ bid.action }}</td>
+                        <td>{{bid.exchange_rate}}  €/$</td>
+                        <td>{{ bid.converted_amount }} {{bid.converted_amount_currency}} </td>
+                        <td>
+                            <span class="badge {% if bid.status == 'AWAITING' %}bg-warning{% elif bid.status == 'ACCEPTED' %}bg-success{% else %}bg-secondary{% endif %}">
+                                {{ bid.get_status_display }}
+                            </span>
+                        </td>
+                        {% if has_awaiting_bids %}
+                        <td>
+                            {% if bid.status == "AWAITING" %}
+                            <div class="d-flex flex-wrap gap-2">
+                                <form method="post" action="{% url 'offers:accept_bid' bid.id %}?next={{request.path}}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                </form>
+                                <form method="post" action="{% url 'offers:reject_bid' bid.id %}?next={{request.path}}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                </form>
+                            </div>
+                            {% endif %}
+                        </td>
+                        {% endif %}
+                        {% if has_accepted_bids %}
+                        <td>
+                            {% if bid.status == 'ACCEPTED' and not bid.contact_shared %}
+                                <form method="post" action="{% url 'offers:share_contact' bid.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-info btn-sm">Share Contact</button>
+                                </form>
+                            {% elif bid.contact_shared %}
+                                <span class="text-success">Contact Shared</span>
+                            {% endif %}
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">No bids found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 {% endblock %}
