@@ -25,6 +25,7 @@ def create_offer(request):
                 offer.exchange_rate = latest_rate
 
             offer.save()
+            messages.success(request, "Offer created successfully.")
             return redirect('offers:view_offers')
     else:
         form = OfferForm()
@@ -52,6 +53,11 @@ def view_offers(request):
     # Annotate offers with user's bid if exists
     for offer in offers:
         offer.user_bid = offer.bids.filter(user=request.user).first()
+        offer.converted_amount = (
+            round(offer.amount / offer.exchange_rate if offer.currency == "EUR" else offer.amount * offer.exchange_rate, 2)
+        )
+        offer.converted_amount_currency = "EUR" if offer.currency == "USD" else "USD"
+        offer.action = "Buying" if offer.is_buying else "Selling"
 
     return render(request, 'offers/view_offers.html', {'offers': offers})
 
@@ -60,6 +66,10 @@ def edit_offer(request, pk):
     offer = get_object_or_404(Offer, pk=pk)
     if offer.user != request.user:
         return HttpResponseForbidden()
+    
+    if offer.bids.filter(status='ACCEPTED').exists():
+        messages.error(request, "You cannot edit this offer as it has at least one accepted bid.")
+        return redirect('offers:view_offers')
     if request.method == "POST":
         form = OfferForm(request.POST, instance=offer)
         if form.is_valid():
@@ -73,6 +83,7 @@ def edit_offer(request, pk):
                 updated_offer.exchange_rate = latest_rate
 
             updated_offer.save()
+            messages.success(request, "Offer updated successfully.")
             return redirect('offers:view_offers')
     else:
         form = OfferForm(instance=offer)
@@ -105,47 +116,71 @@ def place_bid(request, offer_id):
         return redirect('offers:view_offers')
 
     if request.method == "POST":
-        form = BidForm(request.POST,offer=offer)
-        if form.is_valid():
-            bid = form.save(commit=False)
-            bid.offer = offer
-            bid.user = request.user
-            bid.save()
-            messages.success(request, "Bid placed successfully.")
-            return redirect('offers:view_offers')
-    else:
-        form = BidForm(offer=offer)
+        bid = Bid(
+            offer=offer,
+            user=request.user,
+            amount=offer.amount,
+            currency=offer.currency,
+            exchange_rate=offer.exchange_rate,
+        )
+        bid.save()
+        messages.success(request, "Bid placed successfully.")
+        return redirect('offers:view_offers')
 
-    return render(request, 'offers/place_bid.html', {'form': form, 'offer': offer})
+    return render(request, 'offers/place_bid.html', {'offer': offer})
+
 
 @login_required
 def view_bids(request, offer_id):
     offer = get_object_or_404(Offer, id=offer_id, user=request.user)
+    offer.action = "Buying" if offer.is_buying else "Selling"
+    offer.converted_amount = (round(offer.amount / offer.exchange_rate if offer.currency == "EUR" else offer.amount * offer.exchange_rate, 2))
+    offer.converted_amount_currency = "EUR" if offer.currency == "USD" else "USD"
+   
     bids = offer.bids.all()
     has_accepted_bids = offer.bids.filter(status='ACCEPTED').exists()
+    has_awaiting_bids = offer.bids.filter(status='AWAITING').exists()
     for bid in bids:
         bid.converted_amount = (
-            round(bid.amount / offer.exchange_rate if offer.currency == "USD" else bid.amount * offer.exchange_rate, 2)
+            round(bid.amount / bid.exchange_rate if bid.offer.currency == "EUR" else bid.amount * bid.exchange_rate, 2)
         )
+        bid.converted_amount_currency = "EUR" if offer.currency == "USD" else "USD"
+        bid.action = "Selling" if bid.offer.is_buying else "Buying"
+       
 
-    return render(request, 'offers/view_bids.html', {'offer': offer, 'bids': bids, 'has_accepted_bids': has_accepted_bids})
+    return render(request, 'offers/view_bids.html', {'offer': offer, 'bids': bids, 'has_accepted_bids': has_accepted_bids, 'has_awaiting_bids': has_awaiting_bids})
 
    
 @login_required
 def edit_bid(request, bid_id):
     bid = get_object_or_404(Bid, id=bid_id, user=request.user)
-    offer = bid.offer 
+    offer = bid.offer
+    next_url = request.GET.get('next', None)
+
+    if bid.status != "AWAITING":
+        messages.error(request, "You cannot edit this bid as it has already been processed.")
+        return redirect(next_url or 'offers:view_offers')
+
+
+    if offer.rate_type != "FLEXIBLE":
+        messages.error(request, "Bids can only be updated for offers with a flexible exchange rate.")
+        return redirect(next_url or 'offers:view_offers')
+
 
     if request.method == "POST":
-        form = BidForm(request.POST, instance=bid, offer=offer)  
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Your bid has been updated successfully.")
-            return redirect('offers:view_offers')
-    else:
-        form = BidForm(instance=bid, offer=offer)
+        try:
+            latest_rate = LatestExchangeRate.objects.latest("timestamp").rate
+        except LatestExchangeRate.DoesNotExist:
+            latest_rate = offer.exchange_rate
 
-    return render(request, 'offers/edit_bid.html', {'form': form, 'bid': bid})
+        bid.exchange_rate = latest_rate
+        bid.save()
+        messages.success(request, "Your bid has been updated with the latest exchange rate.")
+        return redirect(next_url or 'offers:view_offers')
+
+
+    return render(request, 'offers/edit_bid.html', {'bid': bid, 'next': next_url, 'offer':offer})
+
 
 
 @login_required

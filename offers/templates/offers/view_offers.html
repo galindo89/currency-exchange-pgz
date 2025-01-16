@@ -32,7 +32,7 @@
             <select name="rate_type" id="rate_type" class="form-select form-select-sm me-2">
                 <option value="">All Rates</option>
                 <option value="FIXED" {% if request.GET.rate_type == 'FIXED' %}selected{% endif %}>Fixed</option>
-                <option value="VARIABLE" {% if request.GET.rate_type == 'VARIABLE' %}selected{% endif %}>Flexible</option>
+                <option value="FLEXIBLE" {% if request.GET.rate_type == 'FLEXIBLE' %}selected{% endif %}>Flexible</option>
             </select>
             <button type="submit" class="btn btn-primary btn-sm w-100 w-md-auto">Filter</button>
             <a href="{% url 'offers:view_offers' %}" class="btn btn-secondary btn-sm w-100 w-md-auto">Reset</a>
@@ -44,24 +44,22 @@
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card shadow-sm offer-card ">
                 <div class="card-body">
-                    <h5 class="card-title">{{ offer.user.username }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">
-                        {% if offer.is_buying %} Buying {% else %} Selling {% endif %}
-                        {{ offer.amount }} {{ offer.currency }}
-                    </h6>
-                    <p class="card-text">
-                        Exchange Rate: <strong>{{ offer.exchange_rate }} EUR/USD</strong><br>
-                        Conversion Amount: <strong>{{ offer.conversion_amount }}
-                            {% if offer.currency == "USD" %} EUR {% else %} USD {% endif %}
-                        </strong><br>
-                        ER Type: <strong>{{ offer.get_rate_type_display }}</strong><br>
-                        Created On: {{ offer.created_at|date:"M d, Y" }}
-                    </p>
+                    <h5 class="card-title">Offer ID: {{ offer.id}}</h5>
+                    <p></p>
+                    <p>Created By: <strong>{{offer.user.username}}</strong></p>
+                    <p>Offer: <strong>{{offer.amount}} {{offer.currency}}</strong></p>
+                    <p>Action: <strong>{{offer.action}}</strong></p>
+                    <p>Exchange Rate: <strong>{{offer.exchange_rate}} €/$ </strong></p>                    
+                    <p>Exchange Amount: <strong>{{offer.converted_amount}} {{offer.converted_amount_currency}}</strong></p>
+                    <p>Exchange Type: <strong>{{offer.get_rate_type_display}}</strong></p>
+                    <p>Created On: <strong>{{offer.created_at|date:"M d, Y"}}</strong></p>
+
+
 
                     <!-- Bid Status for Logged-in User -->
                     {% if offer.user_bid %}
                     <p class="card-text">
-                        <strong>Your Bid:</strong> {{ offer.user_bid.amount }}<br>
+                        <strong>Your Bid:</strong> {{ offer.user_bid.amount }} {{offer.user_bid.currency}}<br>
                         <strong>Status:</strong> {{ offer.user_bid.get_status_display }}
                     </p>
                     {% endif %}
@@ -95,11 +93,18 @@
                     <!-- For Bidders -->
                     <div class="bid-buttons">
                         {% if not offer.user_bid %}
-                        <a href="{% url 'offers:place_bid' offer.id %}" class="btn btn-primary btn-sm">Place Bid</a>
+                        <!-- Place Bid Button -->
+                        <a href="{% url 'offers:place_bid' offer.id %}" class="btn btn-primary btn-sm">
+                            Place Bid
+                        </a>
                         {% else %}
-                         <!-- Show Edit Bid Button Only if Status is AWAITING -->
+                        <!-- Show Edit Bid Button Only if Status is AWAITING -->
                         {% if offer.user_bid.status == "AWAITING" %}
-                        <a href="{% url 'offers:edit_bid' offer.user_bid.id %}" class="btn btn-warning btn-sm">Edit Your Bid</a>
+                        <a href="{% url 'offers:edit_bid' offer.user_bid.id %}" class="btn btn-warning btn-sm">
+                            Edit Your Bid
+                        </a>
+                        {% endif %}                
+                     
                         {% endif %}
                         {% if offer.user_bid and offer.user_bid.id %}
                         <button
@@ -112,7 +117,7 @@
                             Delete Bid
                         </button>
                         {% endif %}
-                        {% endif %}
+                        
                     </div>
                     {% endif %}
 

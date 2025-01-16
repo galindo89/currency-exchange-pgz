@@ -16,6 +16,20 @@ def home_redirect(request):
 def dashboard(request):
     my_offers = Offer.objects.filter(user=request.user)
     my_bids = Bid.objects.filter(user=request.user)
+    for offer in my_offers:
+        offer.converted_amount =(
+            round(offer.amount / offer.exchange_rate if offer.currency == "EUR" else offer.amount * offer.exchange_rate, 2)
+            )
+        offer.converted_amount_currency = "EUR" if offer.currency == "USD" else "USD"
+        offer.action = "Buying" if offer.is_buying else "Selling"
+        
+    for bid in my_bids:
+        bid.converted_amount = (
+            round(bid.amount / bid.exchange_rate if bid.currency == "EUR" else bid.amount * bid.exchange_rate, 2)
+        )
+        
+        bid.converted_amount_currency = "EUR" if bid.currency == "USD" else "USD"
+        bid.action = "Selling" if bid.offer.is_buying else "Buying"
 
     return render(request, 'core/dashboard.html', {
         'my_offers': my_offers,

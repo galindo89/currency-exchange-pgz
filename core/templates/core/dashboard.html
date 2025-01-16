@@ -6,9 +6,7 @@
 
 {% block content %}
 <div class="container mt-4">
-    <!-- Welcome Section -->
-    <h1 class="text-center mb-4">Welcome, {{ user.username }}!</h1>
-
+    
     <!-- Summary Cards Section -->
     <div class="row g-4 mb-4">
         <div class="col-12 col-md-6 col-lg-4">
@@ -33,14 +31,18 @@
 
     <!-- My Offers Section -->
     <div id="my-offers" class="mt-5">
-        <h4 class="mb-3">My Offers</h4>
+        <h4 class="mb-3 dashboard-scroll-title" >My Offers</h4>
         <div class="scroll-container d-flex gap-3">
             {% for offer in my_offers %}
             <div class="card shadow-sm dashboard-card">
                 <div class="card-body">
                     <h5> Offer ID: {{ offer.id }}</h5>
-                    <p>Amount: <strong>{{ offer.amount }} {{ offer.currency }}</strong></p>
+                    <p></p>
+                    <p>Offer: <strong>{{ offer.amount }} {{ offer.currency }}</strong></p>
+                    <p>Action: <strong>{{offer.action}} {{offer.currency}}</strong></p>
                     <p>Exchange Rate: <strong>{{ offer.exchange_rate }} €/$</strong></p>
+                    <p>Exchange Amount: <strong>{{offer.converted_amount}} {{offer.converted_amount_currency}}</strong></p>
+                    <p>Rate Type: <strong>{{ offer.get_rate_type_display }}</strong></p>
                     <p>Bids: <strong>{{ offer.bids.count }}</strong></p>
                     <a href="{% url 'offers:view_bids' offer.id %}" class="btn btn-primary btn-sm">View Bids</a>
                     <a href="{% url 'offers:edit_offer' offer.id %}" class="btn btn-warning btn-sm">Edit</a>
@@ -62,17 +64,21 @@
 
     <!-- Offers I've Bid On Section -->
     <div id="my-bids" class="mt-5">
-        <h4 class="mb-3">Offers I've Bid On</h4>
+        <h4 class="mb-3 dashboard-scroll-title">Offers I've Bid On</h4>
         <div class="scroll-container d-flex gap-3">
             {% for bid in my_bids %}
             <div class="card shadow-sm dashboard-card">
                 <div class="card-body d-flex flex-column justify-content-between">
                     <!-- Card Content -->
                     <div>
-                        <h5>{{ bid.offer.user.username }}</h5>
-                        <h5>{{ bid.offer.amount }} {{ bid.offer.currency }}</h5>
-                        <p>My Bid: <strong>{{ bid.amount }} {{ bid.offer.currency }}</strong></p>
-                        <p>Converted Amount: <strong>{{ bid.converted_amount }}</strong></p>
+                        <h5>Offer ID: {{ bid.offer.id }}</h5>
+                        <p></p>
+                        <p>Created By: <strong>{{ bid.offer.user.username }}</strong> </p>
+                        <p>Offer:<strong> {{ bid.offer.amount }} {{ bid.offer.currency }}</strong></p>
+                        <p>My Bid: <strong>{{ bid.amount }} {{ bid.currency }}</strong></p>
+                        <p>Exchange Rate: <strong>{{ bid.exchange_rate }} €/$</strong></p>
+                        <p>Exchange Amount: <strong>{{bid.converted_amount}} {{bid.converted_amount_currency}}</strong></p>
+                        <p>Rate Type: <strong>{{ bid.offer.get_rate_type_display }}</strong></p>
                         <p>Status: <strong>{{ bid.get_status_display }}</strong></p>
     
                         {% if bid.status == 'ACCEPTED' %}
@@ -99,8 +105,8 @@
                         <!-- Edit Bid Button -->
                         {% if bid.status == "AWAITING" %}
                          
-                        <a href="{% url 'offers:edit_bid' bid.id %}" class="btn btn-warning btn-sm w-100">
-                            Edit Bid
+                        <a href="{% url 'offers:edit_bid' bid.id %}?next={{ request.path }}" class="btn btn-warning btn-sm w-100">
+                            Update Bid
                         </a>
                         {% endif %}
     
