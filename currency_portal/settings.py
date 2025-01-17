@@ -83,6 +83,10 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',  
 ]
 
+# Allauth custom settings
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
 
 # Application definition
 
@@ -93,10 +97,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "core",
-    "users",
+    "core",   
     "offers",
     'allauth',
+    "users",
     'allauth.account',
     'allauth.socialaccount',
 ]
