@@ -3,6 +3,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,20 +15,22 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-    
+
 </head>
+
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-        
-             <!-- Toggler Button for Mobile -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+
+            <!-- Toggler Button for Mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
 
-        {% if user.is_authenticated %}
+            {% if user.is_authenticated %}
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -44,67 +47,66 @@
                     </li>
                 </ul>
             </div>
-        {% else %}
+            {% else %}
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Contact</a>
-                        </li>
-                    </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Contact</a>
+                    </li>
+                </ul>
             </div>
-        {% endif %}
+            {% endif %}
 
 
-            
 
 
-        <div class="d-flex align-items-center">
-            <!-- Exchange Rate -->
-            <div class="navbar-text me-3">
-               <strong>{{ exchange_rate }} EUR/USD</strong>
-            </div>
 
-            <!--User Name-->
-            {% if user.is_authenticated %}
+            <div class="d-flex align-items-center">
+                <!-- Exchange Rate -->
                 <div class="navbar-text me-3">
-                     <strong>{{ user.username }}</strong>
+                    <strong>{{ exchange_rate }} EUR/USD</strong>
                 </div>
-            {% endif %}
 
-                       
-            <!-- Log Out Button -->
-            {% if user.is_authenticated %}
+                <!--User Name-->
+                {% if user.is_authenticated %}
+                <div class="navbar-text me-3">
+                    <strong>{{ user.username }}</strong>
+                </div>
+                {% endif %}
+
+
+                <!-- Log Out Button -->
+                {% if user.is_authenticated %}
                 <a href="/accounts/logout/" class="btn btn-danger btn-sm">Log Out</a>
-            {% endif %}
-        </div>
+                {% endif %}
+            </div>
         </div>
     </nav>
 
-     <!-- Messages -->
-     {% if messages %}
-     <div class="container mt-3">
-         {% for message in messages %}
-         <div class="alert alert-{{ message.tags }} alert-dismissible fade show d-flex align-items-center" role="alert">
-             {% if message.tags == "success" %}
-             <i class="bi bi-check-circle-fill me-2"></i>
-             {% elif message.tags == "error" or message.tags == "danger" %}
-             <i class="bi bi-exclamation-triangle-fill me-2"></i>
-             {% elif message.tags == "warning" %}
-             <i class="bi bi-exclamation-circle-fill me-2"></i>
-             {% elif message.tags == "info" %}
-             <i class="bi bi-info-circle-fill me-2"></i>
-             {% endif %}
-             <span>{{ message }}</span>
-             <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
-         </div>
-         {% endfor %}
-     </div>
-     {% endif %}
-     
+    <!-- Messages -->
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show d-flex align-items-center" role="alert">
+            {% if message.tags == "success" %}
+            <i class="bi bi-check-circle-fill me-2"></i>
+            {% elif message.tags == "error" or message.tags == "danger" %}
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {% elif message.tags == "warning" %}
+            <i class="bi bi-exclamation-circle-fill me-2"></i>
+            {% elif message.tags == "info" %}
+            <i class="bi bi-info-circle-fill me-2"></i>
+            {% endif %}
+            <span>{{ message }}</span>
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
 
     <!-- Main Content -->
     <main class="container mt-4">
@@ -122,5 +124,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     {% block scripts %}
     {% endblock %}
-   </body>
+</body>
+
 </html>
