@@ -22,22 +22,25 @@
 
         <!-- Filter Section -->
         <form method="get" action="{% url 'offers:view_offers' %}" class="d-flex align-items-center gap-2">
+            <label for="is_buying" class="visually-hidden">Transaaction Type:</label>
             <select name="is_buying" id="is_buying" class="form-select form-select-sm me-2">
                 <option value="">All Types</option>
                 <option value="1" {% if request.GET.is_buying|default:'' == '1' %}selected{% endif %}>Buying</option>
                 <option value="0" {% if request.GET.is_buying|default:'' == '0' %}selected{% endif %}>Selling</option>
             </select>
+           <label for="currency" class="visually-hidden">Currency:</label>
             <select name="currency" id="currency" class="form-select form-select-sm me-2">
                 <option value="">All Currencies</option>
                 <option value="USD" {% if request.GET.currency == 'USD' %}selected{% endif %}>USD</option>
                 <option value="EUR" {% if request.GET.currency == 'EUR' %}selected{% endif %}>EUR</option>
             </select>
+            <label for="rate_type" class="visually-hidden">Rate Type:</label>
             <select name="rate_type" id="rate_type" class="form-select form-select-sm me-2">
                 <option value="">All Rates</option>
                 <option value="FIXED" {% if request.GET.rate_type == 'FIXED' %}selected{% endif %}>Fixed</option>
                 <option value="FLEXIBLE" {% if request.GET.rate_type == 'FLEXIBLE' %}selected{% endif %}>Flexible</option>
             </select>
-            <button type="submit" class="btn btn-primary btn-sm w-100 w-md-auto">Filter</button>
+            <button type="submit" class="btn btn-primary btn-sm w-100 w-md-auto" aria-label="Filter Offers">Filter</button>
             <a href="{% url 'offers:view_offers' %}" class="btn btn-secondary btn-sm w-100 w-md-auto" aria-label="Reset filter values">Reset</a>
         </form>
     </div>
@@ -88,7 +91,8 @@
                                 data-bs-toggle="modal"
                                 data-bs-target="#deleteConfirmationModal"
                                 data-action="{% url 'offers:delete_offer' offer.id %}?next={{ request.path }}"
-                                data-item="offer">
+                                data-item="offer"
+                                aria-label="Delete offer">
                                 Delete Offer
                             </button>
                         </div>
@@ -110,8 +114,8 @@
                         {% if offer.user_bid.status == "AWAITING" %}
                         <a href="{% url 'offers:edit_bid' offer.user_bid.id %}?next={{ request.path }}" 
                            class="btn btn-warning btn-sm"
-                           aria-label="Edit your bid">
-                           Edit Your Bid
+                           aria-label="Update your bid">
+                           Update Your Bid
                         </a>
                         {% endif %}
                         {% endif %}
@@ -122,7 +126,8 @@
                             data-bs-toggle="modal"
                             data-bs-target="#deleteConfirmationModal"
                             data-action="{% url 'offers:delete_bid' offer.user_bid.id %}?next={{ request.path }}"
-                            data-item="bid">
+                            data-item="bid"
+                            aria-label="Delete your bid">
                             Delete Bid
                         </button>
                         {% endif %}

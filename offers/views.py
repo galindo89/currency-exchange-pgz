@@ -88,7 +88,7 @@ def edit_offer(request, pk):
         messages.error(
             request, "You cannot edit this offer as it has at least one \
             accepted bid.")
-        return redirect('offers:view_offers')
+        return redirect(next_url)
     if request.method == "POST":
         form = OfferForm(request.POST, instance=offer)
         if form.is_valid():
