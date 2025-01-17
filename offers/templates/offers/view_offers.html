@@ -21,7 +21,7 @@
         <h2 class="text-center text-md-start mb-2 mb-md-0">Active Offers</h2>
 
         <!-- Filter Section -->
-        <form method="get" action="" class="d-flex align-items-center gap-2">
+        <form method="get" action="{% url 'offers:view_offers' %}" class="d-flex align-items-center gap-2">
             <select name="is_buying" id="is_buying" class="form-select form-select-sm me-2">
                 <option value="">All Types</option>
                 <option value="1" {% if request.GET.is_buying|default:'' == '1' %}selected{% endif %}>Buying</option>

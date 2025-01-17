@@ -18,8 +18,7 @@ class OfferForm(forms.ModelForm):
             'currency', 'amount', 'exchange_rate', 'is_buying', 'rate_type']
         widgets = {
             'currency': forms.Select(attrs={
-                'class': 'form-control',
-                'placeholder': 'Select currency'
+                'class': 'form-control'                
             }),
             'amount': forms.NumberInput(attrs={
                 'class': 'form-control',
@@ -28,8 +27,7 @@ class OfferForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Leave empty for latest rate'}),
             'rate_type': forms.Select(attrs={
-                'class': 'form-control',
-                'placeholder': 'Select rate type'}),
+                'class': 'form-control'}),
             'is_buying': forms.CheckboxInput(attrs={
                 'class': 'form-check-input'}),
         }
