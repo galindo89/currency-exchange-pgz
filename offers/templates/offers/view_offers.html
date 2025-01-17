@@ -63,7 +63,10 @@
                     <!-- Bid Status for Logged-in User -->
                     {% if offer.user_bid %}
                     <p class="card-text">
+                        
+                        <strong>------</strong> <br>
                         <strong>Your Bid:</strong> {{ offer.user_bid.amount }} {{offer.user_bid.currency}}<br>
+                        <strong>In Exchange Of:</strong> {{ offer.bid_converted_amount }} {{ offer.bid_converted_currency }} <br>
                         <strong>Status:</strong> {{ offer.user_bid.get_status_display }}
                     </p>
                     {% endif %}

@@ -76,7 +76,7 @@
                         <p>Offer:<strong> {{ bid.offer.amount }} {{ bid.offer.currency }}</strong></p>
                         <p>My Bid: <strong>{{ bid.amount }} {{ bid.currency }}</strong></p>
                         <p>Exchange Rate: <strong>{{ bid.exchange_rate }} €/$</strong></p>
-                        <p>Exchange Amount: <strong>{{bid.converted_amount}} {{bid.converted_amount_currency}}</strong></p>
+                        <p>In Exchange Of: <strong>{{bid.converted_amount}} {{bid.converted_amount_currency}}</strong></p>
                         <p>Rate Type: <strong>{{ bid.offer.get_rate_type_display }}</strong></p>
                         <p>Status: <strong>{{ bid.get_status_display }}</strong></p>
     

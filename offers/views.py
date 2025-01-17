@@ -70,6 +70,20 @@ def view_offers(request):
                                            if offer.currency == "USD"
                                            else "USD")
         offer.action = "Buying" if offer.is_buying else "Selling"
+        if offer.user_bid:
+            offer.bid_converted_amount = round(
+                offer.user_bid.amount / offer.user_bid.exchange_rate
+                if offer.user_bid.currency == "EUR"
+                else offer.user_bid.amount * offer.user_bid.exchange_rate, 2
+            )
+            offer.bid_converted_currency = (
+                "EUR" if offer.user_bid.currency == "USD" else "USD"
+            )
+        else:
+            offer.bid_converted_amount = None
+            offer.bid_converted_currency = None
+                  
+        
 
     return render(request, 'offers/view_offers.html', {'offers': offers})
 
