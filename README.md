@@ -265,39 +265,38 @@ The table below provides an overview of the application's features, showcasing t
 | User Authorization | User Registration       | Mobile              | ![Screenshot](readme-docs/features/mobile_sign_up.PNG)                  |
 | User Authorization | User Log In             | Mobile              | ![Screenshot](readme-docs/features/mobile_log_in.png)                   |
 | User Authorization | User Log Out            | Mobile              | ![Screenshot](readme-docs/features/mobile_log_out.png)                  |
-| User Authorization | Password Reset          | Mobile              | ![Screenshot](readme-docs/features/mobile_password_reset.png)           |
-| User Authorization | User Registration       | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_sign_up.png)                 |
+| User Authorization | Password Reset          | Mobile              | ![Screenshot](readme-docs/features/mobile_password_reset.PNG)           |
+| User Authorization | User Registration       | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_sign_up.PNG)                 |
 | User Authorization | User Log In             | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_log_in.png)                  |
-| User Authorization | User Log Out            | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_log_out.png)                 |
+| User Authorization | User Log Out            | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_log_out.PNG)                 |
 | User Authorization | Password Reset          | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_password_reset.png)          |
-| Offer Management   | Create Offer            | Mobile              | ![Screenshot](readme-docs/features/mobile_create_offer.png)             |
-| Offer Management   | Create Offer Validation | Mobile              | ![Screenshot](readme-docs/features/mobile_create_offer_validation.png)  |
-| Offer Management   | Edit Offer              | Mobile              | ![Screenshot](readme-docs/features/mobile_edit_offer.png)               |
-| Offer Management   | Delete Offer            | Mobile              | ![Screenshot](readme-docs/features/mobile_delete_offer.png)             |
-| Offer Management   | Create Offer            | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_create_offer.png)            |
-| Offer Management   | Create Offer Validation | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_create_offer_validation.png) |
-| Offer Management   | Edit Offer              | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_edit_offer.png)              |
-| Offer Management   | Delete Offer            | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_delete_offer.png)            |
-| Filters            | Filter                  | Mobile              | ![Screenshot](readme-docs/features/mobile_filter.png)                   |
-| Filters            | Filter                  | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_filter.png)                  |
-| Dashboard          | Active offers and Bids  | Mobile              | ![Screenshot](readme-docs/features/mobile_active_offers_bids.png)       |
-| Dashboard          | My Offers Section       | Mobile              | ![Screenshot](readme-docs/features/mobile_my_offers_section.png)        |
-| Dashboard          | My Bids Section         | Mobile              | ![Screenshot](readme-docs/features/mobile_my_bids_section.png)          |
-| Dashboard          | Active offers and Bids  | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_active_offers_bids.png)      |
-| Dashboard          | My Offers Section       | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_my_offers_section.png)       |
-| Dashboard          | My Bids Section         | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_my_bids_section.png)         |
-| Bid Management     | Create Bid              | Mobile              | ![Screenshot](readme-docs/features/mobile_create_bid.png)               |
-| Bid Management     | Edit Bid                | Mobile              | ![Screenshot](readme-docs/features/mobile_edit_bid.png)                 |
-| Bid Management     | Edit Bid Validation     | Mobile              | ![Screenshot](readme-docs/features/mobile_edit_bid_validation.png)      |
-| Bid Management     | Delete Bid              | Mobile              | ![Screenshot](readme-docs/features/mobile_delete_bid.png)               |
-| Bid Management     | Bid Acceptance          | Mobile              | ![Screenshot](readme-docs/features/mobile_bid_acceptance.png)           |
-| Bid Management     | Sharing Contact         | Mobile              | ![Screenshot](readme-docs/features/mobile_sharing_contact.png)          |
-| Bid Management     | Create Bid              | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_create_bid.png)              |
-| Bid Management     | Edit Bid                | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_edit_bid.png)                |
-| Bid Management     | Edit Bid Validation     | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_edit_bid_validation.png)     |
-| Bid Management     | Delete Bid              | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_delete_bid.png)              |
-| Bid Management     | Bid Acceptance          | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_bid_acceptance.png)          |
-| Bid Management     | Sharing Contact         | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_sharing_contact.png)         |
+| Offer Management   | Create Offer            | Mobile              | ![Screenshot](readme-docs/features/mobile_create_offer.PNG)             |
+| Offer Management   | Create Offer Validation | Mobile              | ![Screenshot](readme-docs/features/mobile_create_offer_validation.PNG)  |
+| Offer Management   | Edit Offer              | Mobile              | ![Screenshot](readme-docs/features/mobile_edit_offer.PNG)             |
+| Offer Management   | Create Offer            | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_create_offer.PNG)            |
+| Offer Management   | Create Offer Validation | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_create_offer_validation.PNG) |
+| Offer Management   | Edit Offer              | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_edit_offer.PNG)              |
+| Offer Management   | Delete Offer            | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_delete_offer.PNG)            |
+| Filters            | Filter                  | Mobile              | ![Screenshot](readme-docs/features/mobile_filter.PNG)                   |
+| Filters            | Filter                  | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_filter.PNG)                  |
+| Dashboard          | Active offers and Bids  | Mobile              | ![Screenshot](readme-docs/features/mobile_active_offers_bids.PNG)       |
+| Dashboard          | My Offers Section       | Mobile              | ![Screenshot](readme-docs/features/mobile_my_offers_section.PNG)        |
+| Dashboard          | My Bids Section         | Mobile              | ![Screenshot](readme-docs/features/mobile_my_bids_section.PNG)          |
+| Dashboard          | Active offers and Bids  | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_active_offers_bids.PNG)      |
+| Dashboard          | My Offers Section       | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_my_offers_section.PNG)       |
+| Dashboard          | My Bids Section         | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_my_bids_section.PNG)         |
+| Bid Management     | Create Bid              | Mobile              | ![Screenshot](readme-docs/features/mobile_create_bid.PNG)               |
+| Bid Management     | Edit Bid                | Mobile              | ![Screenshot](readme-docs/features/mobile_edit_bid.PNG)                 |
+| Bid Management     | Edit Bid Validation     | Mobile              | ![Screenshot](readme-docs/features/mobile_edit_bid_validation.PNG)      |
+| Bid Management     | Delete Bid              | Mobile              | ![Screenshot](readme-docs/features/mobile_delete_bid.PNG)               |
+| Bid Management     | Bid Acceptance          | Mobile              | ![Screenshot](readme-docs/features/mobile_bid_acceptance.PNG)           |
+| Bid Management     | Sharing Contact         | Mobile              | ![Screenshot](readme-docs/features/mobile_sharing_contact.PNG)          |
+| Bid Management     | Create Bid              | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_create_bid.PNG)              |
+| Bid Management     | Edit Bid                | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_edit_bid.PNG)                |
+| Bid Management     | Edit Bid Validation     | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_edit_bid_validation.PNG)     |
+| Bid Management     | Delete Bid              | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_delete_bid.PNG)              |
+| Bid Management     | Bid Acceptance          | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_bid_acceptance.PNG)          |
+| Bid Management     | Sharing Contact         | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_sharing_contact.PNG)         |
 </details>
 
   
