@@ -68,7 +68,6 @@ A web-based platform designed for a community of Ecuadorian school alumni to man
   - [**Testing**](#testing)
   - [**Bugs Encountered**](#bugs-encountered)
   - [**Credits**](#credits)
-  - [**Credits**](#credits-1)
     - [Contact](#contact)
 
 ---
@@ -504,13 +503,7 @@ To enhance the user experience and expand the application's capabilities, the fo
 - **LatestExchangeRate** influences **Offer** (informational).
 
 ---
-
-
 ---
-
-
-
-
 ---
 
 ## **Technologies Used**
@@ -641,8 +634,6 @@ During the development and testing phases, the following bugs were identified an
 
 
 ---
-
-## **Credits**
 
 ## **Credits**
 
