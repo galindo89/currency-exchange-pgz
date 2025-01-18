@@ -3,6 +3,8 @@
 
 A web-based platform designed for a community of Ecuadorian school alumni to manage currency exchange offers efficiently. The platform resolves challenges posed by informal WhatsApp-based currency exchanges.
 
+Visit the deployed site: [Currency-Exchange-App](https://currency-exchange-pgz-e03207f4ea3d.herokuapp.com/)
+
 ---
 
 ## **CONTENTS**

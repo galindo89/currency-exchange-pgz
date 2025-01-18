@@ -1,9 +1,6 @@
 # **Testing**
 
-For this project an extensive set of test scenarios was defined to verify the application was working as expected.  The vast majority of the testing was conducted manually. However, given the importance of automated test, one automated test was implemented in order to experience and lear of test automation.
-
-
-
+For this project, an extensive set of test scenarios was defined to ensure the application functions as expected. The majority of the testing was conducted manually to verify key features and user interactions. However, recognizing the importance of automated testing, one automated test was implemented as a learning experience to explore and understand the fundamentals of test automation.
 
 ---
 
@@ -19,6 +16,10 @@ For this project an extensive set of test scenarios was defined to verify the ap
     - [Browser Compatibility](#browser-compatibility)
     - [Responsiveness Testing](#responsiveness-testing)
   - [**User Story Testing**](#user-story-testing)
+  - [**Automated Testing**](#automated-testing)
+    - [**Test: Offer Creation**](#test-offer-creation)
+    - [**Summary of the Test**](#summary-of-the-test)
+    - [**Results**](#results)
 
 ---
 
@@ -196,5 +197,46 @@ For testing the user stories, a set of scenarios was defined, listing the differ
 </details>
 
 ---
+
+## **Automated Testing**
+
+### **Test: Offer Creation**
+
+An automated test was implemented to verify the functionality of the **Offer Creation** feature in the application. The test ensures that both valid and invalid offers are processed correctly by the system.
+
+---
+
+### **Summary of the Test**
+The test suite validates the following scenarios:
+
+1. **Valid Fixed Rate Offer**:
+   - Confirms that users can successfully create an offer with a fixed exchange rate.
+   - Assertions verify that the submission redirects properly and the offer is saved in the database.
+
+2. **Valid Flexible Rate Offer**:
+   - Confirms that users can create an offer with a flexible exchange rate, where the rate is dynamically retrieved from the latest exchange rate record.
+   - Assertions validate that the offer is saved with the correct exchange rate and the system processes it as expected.
+
+3. **Invalid Offer Submission**:
+   - Tests the system's ability to reject invalid offers, such as those with a negative amount or missing required fields.
+   - Ensures the form displays appropriate error messages and prevents invalid data from being saved.
+
+---
+
+### **Results**
+
+Finding a tool for proper reporting of the test results proved to be an unexpected challenge. As a workaround, the test outcomes are presented in the following screenshot, captured from the console of my computer where the tests were executed.
+
+<details>
+<summary><strong>View Test Results Screenshot</strong></summary>
+<br>
+
+![Test Results](readme-docs/testing/automated_test/offer_creation_automated_test.PNG)
+
+</details>
+.
+
+---
+
 
 [Back To Top](#table-of-contents)
