@@ -24,7 +24,7 @@
         <form method="get" action="{% url 'offers:view_offers' %}" class="d-flex align-items-center gap-2">
             <label for="is_buying" class="visually-hidden">Transaaction Type:</label>
             <select name="is_buying" id="is_buying" class="form-select form-select-sm me-2">
-                <option value="">All Types</option>
+                <option value="">All Actions</option>
                 <option value="1" {% if request.GET.is_buying|default:'' == '1' %}selected{% endif %}>Buying</option>
                 <option value="0" {% if request.GET.is_buying|default:'' == '0' %}selected{% endif %}>Selling</option>
             </select>

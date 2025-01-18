@@ -82,8 +82,6 @@ def view_offers(request):
         else:
             offer.bid_converted_amount = None
             offer.bid_converted_currency = None
-                  
-        
 
     return render(request, 'offers/view_offers.html', {'offers': offers})
 
