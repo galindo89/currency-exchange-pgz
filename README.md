@@ -262,7 +262,7 @@ The table below provides an overview of the application's features, showcasing t
 
 | Feature            | Action                  | Device              | Screenshot                                                              |
 |:-------------------|:------------------------|:--------------------|:------------------------------------------------------------------------|
-| User Authorization | User Registration       | Mobile              | ![Screenshot](readme-docs/features/mobile_sign_up.png)                  |
+| User Authorization | User Registration       | Mobile              | ![Screenshot](readme-docs/features/mobile_sign_up.PNG)                  |
 | User Authorization | User Log In             | Mobile              | ![Screenshot](readme-docs/features/mobile_log_in.png)                   |
 | User Authorization | User Log Out            | Mobile              | ![Screenshot](readme-docs/features/mobile_log_out.png)                  |
 | User Authorization | Password Reset          | Mobile              | ![Screenshot](readme-docs/features/mobile_password_reset.png)           |
@@ -473,3 +473,4 @@ Steps to deploy:
   - Special thanks to the alumni community for their feedback.
 
 ---
+ 
