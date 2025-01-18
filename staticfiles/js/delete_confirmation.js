@@ -1,3 +1,7 @@
+ /**
+  * A reference to the modal element used for delete confirmation.
+  * @type {HTMLElement}
+  */
 document.addEventListener('DOMContentLoaded', () => {
     const deleteConfirmationModal = document.getElementById('deleteConfirmationModal');
     const deleteForm = document.getElementById('deleteForm');

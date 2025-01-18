@@ -46,7 +46,7 @@ SITE_ID = 1
 ACCOUNT_AUTHENTICATION_METHOD = 'username'  # Options: 'username', 'email', or 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'optional'  # Options: 'mandatory', 'optional', 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # Options: 'mandatory', 'optional', 'none'
 ACCOUNT_SIGNUP_REDIRECT_URL = '/'  # Redirect after signup
 LOGIN_REDIRECT_URL = '/'  # Redirect after login
 LOGOUT_REDIRECT_URL = '/'  # Redirect after logout
@@ -84,6 +84,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -93,10 +94,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "core",
-    "users",
+    "core",   
     "offers",
     'allauth',
+    "users",
     'allauth.account',
     'allauth.socialaccount',
 ]

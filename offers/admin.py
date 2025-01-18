@@ -1,7 +1,9 @@
+"""
+Admin module for the Offers app.
+Handles registration of models to the Django admin interface.
+"""
 from django.contrib import admin
 from .models import Offer, LatestExchangeRate, Bid
-
-# Register your models here.
 
 admin.site.register(Offer)
 admin.site.register(LatestExchangeRate)
