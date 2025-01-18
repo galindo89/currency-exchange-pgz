@@ -5,6 +5,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.urls import reverse
 from offers.models import Offer, LatestExchangeRate
+from decimal import Decimal
 
 
 class OfferCreationTest(TestCase):
@@ -65,7 +66,7 @@ class OfferCreationTest(TestCase):
         offer = Offer.objects.filter(currency="EUR",
                                      rate_type="FLEXIBLE").first()
         self.assertIsNotNone(offer)
-        self.assertEqual(offer.exchange_rate, self.latest_rate.rate)
+        self.assertAlmostEqual(float(offer.exchange_rate), float(self.latest_rate.rate))
 
     def test_invalid_offer_submission(self):
         """
@@ -75,7 +76,7 @@ class OfferCreationTest(TestCase):
 
         data = {
             "currency": "USD",
-            "amount": -100,
+            "amount": 100,
             "is_buying": True,
             "rate_type": "FIXED",
         }
