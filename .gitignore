@@ -14,7 +14,7 @@ static/js/passwordValidation-test.js
 static/css/style-password-requirements.css
 templates/account/signup-test.html
 currency_portal/create_dummy_data.py
-README_TEST.md
+README_TEMP.md
 report_files.py
 TEST.md
 output_file.csv

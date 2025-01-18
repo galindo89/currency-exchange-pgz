@@ -97,7 +97,7 @@ The development of the Currency Exchange Portal followed an agile methodology, l
 ---
 
 ### **Project Management**
-1. **GitHub Repository**: The codebase was managed in a GitHub repository, providing version control and collaboration tools.
+1. **GitHub Repository**: The codebase was managed in a [GitHub repository](https://github.com/galindo89/currency-exchange-pgz)y, providing version control and collaboration tools.
 2. **GitHub Projects**: A [GitHub Project Board](https://github.com/users/galindo89/projects/2) was created to manage user stories, track progress, and organize tasks.
 
 #### **GitHub Project Workflow**
@@ -262,7 +262,7 @@ The table below provides an overview of the application's features, showcasing t
 
 | Feature            | Action                  | Device              | Screenshot                                                              |
 |:-------------------|:------------------------|:--------------------|:------------------------------------------------------------------------|
-| User Authorization | User Registration       | Mobile              | ![Screenshot](readme-docs/features/mobile_sign_up.png)                  |
+| User Authorization | User Registration       | Mobile              | ![Screenshot](readme-docs/features/mobile_sign_up.PNG)                  |
 | User Authorization | User Log In             | Mobile              | ![Screenshot](readme-docs/features/mobile_log_in.png)                   |
 | User Authorization | User Log Out            | Mobile              | ![Screenshot](readme-docs/features/mobile_log_out.png)                  |
 | User Authorization | Password Reset          | Mobile              | ![Screenshot](readme-docs/features/mobile_password_reset.png)           |
