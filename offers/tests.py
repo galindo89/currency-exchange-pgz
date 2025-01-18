@@ -76,7 +76,7 @@ class OfferCreationTest(TestCase):
 
         data = {
             "currency": "USD",
-            "amount": 100,
+            "amount": -100,
             "is_buying": True,
             "rate_type": "FIXED",
         }

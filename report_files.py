@@ -29,4 +29,4 @@ def extract_file_names(folder_path, output_csv):
 
 # Example usage
 # Call the function with the desired folder path and output file name
-extract_file_names("./readme-docs/testing/lighthouse", "output_file.csv")
+extract_file_names("./readme-docs/wireframes", "output_file.csv")

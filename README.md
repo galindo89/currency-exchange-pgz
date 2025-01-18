@@ -26,17 +26,26 @@ A web-based platform designed for a community of Ecuadorian school alumni to man
       - [**Placing a Bid**](#placing-a-bid)
       - [**Managing Offers**](#managing-offers)
       - [**Viewing and Managing Bids**](#viewing-and-managing-bids)
+      - [**Dashboard**](#dashboard)
+      - [**Filter**](#filter)
+  - [Design](#design)
+    - [Colour Scheme](#colour-scheme)
+    - [Typography](#typography)
+    - [Imagery](#imagery)
+    - [Component Highlights](#component-highlights)
+      - [**Wireframes**](#wireframes)
   - [**Features and Architecture**](#features-and-architecture)
     - [**Features**](#features)
       - [**User Authorization**](#user-authorization)
       - [**Offer Management**](#offer-management)
       - [**Bid Management**](#bid-management)
-      - [**Dashboard**](#dashboard)
+      - [**Dashboard**](#dashboard-1)
       - [**Filters**](#filters)
       - [**External Integrations**](#external-integrations)
       - [**Admin Panel**](#admin-panel)
     - [**Responsive Design**](#responsive-design)
     - [Application Features at a Glance](#application-features-at-a-glance)
+      - [**Future Implementations**](#future-implementations)
     - [**Architecture**](#architecture)
       - [**Application Structure**](#application-structure)
       - [**Database Design**](#database-design)
@@ -49,13 +58,18 @@ A web-based platform designed for a community of Ecuadorian school alumni to man
   - [**Technologies Used**](#technologies-used)
     - [**Languages Used**](#languages-used)
     - [**Frameworks, Libraries \& Programs Used**](#frameworks-libraries--programs-used)
+    - [**Tools \& Services**](#tools--services)
   - [**Deployment \& Local Development**](#deployment--local-development)
     - [**Deployment**](#deployment)
+      - [**Updating Exchange Rates**](#updating-exchange-rates)
     - [**Local Development**](#local-development)
       - [**Clone the Repository**](#clone-the-repository)
       - [**Setup Environment**](#setup-environment)
   - [**Testing**](#testing)
+  - [**Bugs Encountered**](#bugs-encountered)
   - [**Credits**](#credits)
+  - [**Credits**](#credits-1)
+    - [Contact](#contact)
 
 ---
 
@@ -159,7 +173,94 @@ The project was structured into four main epics, each focusing on a specific fea
 - As a user who created an offer, I want to accept or reject bids.
 - As a user who created an offer, I want to share my contact details with an accepted bidder.
 
+#### **Dashboard**
+- As a user, I want to see a summary of the total number of offers I have created and bids I have placed.
+- As a user, I want to quickly navigate to the offers I have created or the bids I have placed using dedicated shortcuts.
+- As a user, I want to see detailed metrics about my activity to track my progress and engagement with the platform.
+
+#### **Filter**
+- As a user, I want to filter offers by currency (e.g., USD, EUR) to find offers relevant to me.
+- As a user, I want to filter offers by action type (e.g., buy or sell) to focus on the offers I’m interested in.
+- As a user, I want to filter offers by rate type (e.g., flexible or fixed) to find offers that match my preferences.
+- As a user, I want to combine filters to narrow down the list of offers efficiently.
+
 ---
+
+## Design
+
+### Colour Scheme
+The color scheme was chosen to create a clean and professional appearance, ensuring the user interface is easy to navigate and visually appealing.
+
+- **Primary Colors:**
+  - **Header and Footer Background:** `#f8f9fa` (Light Gray)
+  - **Navbar Text and Links:** `#343a40` (Dark Gray)
+  - **Hover Links:** `#007bff` (Blue)
+  - **Body Background:** White (`#ffffff`)
+- **Text Colors:**
+  - **Headings:** Black (`#000000`)
+  - **Primary Text Color:** Dark Gray (`#343a40`)
+  - **Help Text for Forms:** `#6c757d` (Muted Gray)
+- **Button Colors:**
+  - **Primary Button Background:** `#007bff` (Blue)
+  - **Primary Button Hover Background:** `#0056b3` (Dark Blue)
+  - **Success Alerts and Messages:** `#28a745` (Green)
+  - **Error Alerts and Messages:** `#dc3545` (Red)
+  - **Warning Alerts:** `#ffc107` (Yellow)
+  - **Info Alerts:** `#17a2b8` (Teal)
+- **Borders and Miscellaneous:**
+  - **Input Borders:** `#ced4da` (Light Gray)
+  - **Hover Effects for Action Buttons:** `#80bdff` (Light Blue Outline)
+
+---
+
+### Typography
+For typography, the platform uses a bold and modern style for headings, ensuring clarity and readability.  
+- **Headings (H1, H2, H3):** Bold font for emphasis.
+- **Text Size Adjustments:** Responsive typography across different screen sizes for a seamless user experience.
+
+---
+
+### Imagery
+Minimal imagery is used to maintain focus on functionality. Instead, components like **cards** and **alerts** are styled to provide visual structure. Imagery is limited to icons and simple illustrations in sections like the dashboard.
+
+---
+
+### Component Highlights
+- **Cards:** Used for dashboard and offers sections, styled with rounded corners (`border-radius: 10px`) and subtle shadows (`box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)`).
+- **Hover Effects:** Action buttons (e.g., "edit" and "delete") appear only when hovering over cards.
+- **Tables:** Tables are styled with alternating row colors for better readability (`.table-striped`).
+
+---
+
+#### **Wireframes**
+Wireframes were created to plan the layout and user flow for the application. The tool to created the wireframes was [Visily](https://www.visily.ai/).
+
+<details>
+<summary><strong>Desktop Layout</strong></summary>
+<br>
+
+- **Dashboard Layout**  
+  ![Wireframe Dashboard Desktop](readme-docs/wireframes/dashboard_desktop.png)
+
+- **Create Offer Layout**  
+  ![Wireframe Create Offer Desktop](readme-docs/wireframes/offer_desktop.png)
+
+</details>
+
+<details>
+<summary><strong>Mobile Layout</strong></summary>
+<br>
+
+- **Dashboard Layout (First View)**  
+  ![Wireframe Dashboard Mobile](readme-docs/wireframes/mobile_dashboard.png)
+
+- **Dashboard Layout (Second View)**  
+  ![Wireframe Dashboard Second Mobile](readme-docs/wireframes/dashboard_mobile_second.png)
+
+- **Create Offer Layout**  
+  ![Wireframe Create Offer Mobile](readme-docs/wireframes/offer_mobile.png)
+
+</details>
 
 
 ## **Features and Architecture**
@@ -249,7 +350,6 @@ The project was structured into four main epics, each focusing on a specific fea
   - Manage users, offers, and bids efficiently through an intuitive dashboard.
   - Perform CRUD operations (Create, Read, Update, Delete) on all models.
   - The admin panel is accessible only to authorized administrators, ensuring platform security and data integrity.
-
   
 ### **Responsive Design**
 The platform is fully responsive, providing a seamless experience across desktops, tablets, and mobile devices.
@@ -299,6 +399,22 @@ The table below provides an overview of the application's features, showcasing t
 | Bid Management     | Sharing Contact         | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_sharing_contact.PNG)         |
 </details>
 
+#### **Future Implementations**
+To enhance the user experience and expand the application's capabilities, the following features are planned for future releases:
+
+- **Enhanced Notifications**:
+  - In-app and email notifications for bid activity, offer updates, and accepted bids.
+- **Advanced Filters**:
+  - Adding new filtering options such as time range and user-specific activity filters.
+  - Implementing a keyword search bar for quick access to offers or bids.
+- **Automatic Offer Matching**:
+  - Introducing an algorithm to automatically match compatible offers based on criteria like currency, amount, and rate type, saving time for users.
+- **Flexible Bidding**:
+  - Allowing users to place bids for partial amounts on offers, providing more flexibility for both buyers and sellers.
+- **Multi-Currency Support**:
+  - Extending support to additional currencies to cater to a global audience.
+- **User Profiles**:
+  - Allowing users to customize their profiles with avatars, bios, and statistics about their activities.
   
 ---
 
@@ -331,8 +447,6 @@ The table below provides an overview of the application's features, showcasing t
 
 ---
 
-
----
 
 ### **Database and Models**
 
@@ -407,25 +521,66 @@ The table below provides an overview of the application's features, showcasing t
 - CSS3
 - JavaScript
 
+---
+
 ### **Frameworks, Libraries & Programs Used**
-- Django: Web framework for the backend.
-- Bootstrap: CSS framework for styling.
-- SQLite: Database for storing data.
-- Git & GitHub: Version control and repository hosting.
+- **Django**: Web framework for building the backend and implementing management commands.
+- **Bootstrap**: CSS framework for responsive styling.
+- **SQLite**: Local database used during development.
+- **PostgreSQL**: Database for the production environment.
+- **Git & GitHub**: Version control and repository hosting.
 
 ---
 
-## **Deployment & Local Development**
+### **Tools & Services**
+- **Heroku**: Cloud platform for hosting the application.
+- **Heroku Scheduler**: Add-on for automating tasks like running the `update_exchange_rate.py` script.
+- **SendGrid**: Email service provider for sending password reset and notification emails.
+- **OpenExchangeRates**: API service for fetching real-time exchange rates.
+- **PEP8 Linter**: Tool for ensuring Python code adheres to style guidelines.
+- **Coverage.py**: Tool for measuring test coverage in automated testing.
+- **W3C Validators**: Tools for validating HTML and CSS code quality.
+---
 
+## **Deployment & Local Development**
 ### **Deployment**
 The application is hosted on [Heroku](https://heroku.com).
 
 Steps to deploy:
 1. Push the code to a GitHub repository.
 2. Link the repository to Heroku.
-3. Configure the environment variables (e.g., `DATABASE_URL`, `SECRET_KEY`).
-4. Deploy the application via the Heroku dashboard.
+3. Configure the environment variables in Heroku as follows:
+   - **`DATABASE_URL`**: Connection string for the PostgreSQL database. Example:  
+     `postgresql://<username>:<password>@<host>/<database>`
+   - **`DEBUG`**: Indicates whether debug mode is enabled. Set to `True` during development and `False` in production.
+   - **`SECRET_KEY`**: A unique, secret key for the application. This should be a strong, random value.
+   - **`SENDGRID_API_KEY`**: API key for SendGrid, used for email functionality.
+   - **`OPENEXCHANGERATES_API_KEY`**: API key for OpenExchangeRates, used to fetch exchange rates.
 
+4. Deploy the application via the Heroku dashboard.
+---
+
+#### **Updating Exchange Rates**
+The application includes an `update_exchange_rate.py` script implemented as a Django management command to fetch and update exchange rates. This command can be executed in two ways:
+
+1. **Running the Command Manually**:
+   - Open the Heroku console from the Heroku dashboard.
+   - Run the following command:
+     ```bash
+     python manage.py update_exchange_rate
+     ```
+
+2. **Automating with Heroku Scheduler**:
+   - Install the **Heroku Scheduler** add-on from the Heroku dashboard.
+   - Add a new job in the scheduler with the following command:
+     ```bash
+     python manage.py update_exchange_rate
+     ```
+   - Set the desired interval (e.g., every 10 minutes, hourly, or daily) to automatically fetch and update exchange rates.
+
+> **Note:** Ensure that the `OPENEXCHANGERATES_API_KEY` environment variable is set correctly in Heroku for the script to function.
+
+---
 ### **Local Development**
 
 #### **Clone the Repository**
@@ -458,18 +613,75 @@ Steps to deploy:
 
 ## **Testing**
 - Comprehensive testing was conducted to ensure functionality across devices and browsers.
-- Specific test cases include:
-  - Creating, editing, and deleting offers.
-  - Placing, editing, and deleting bids.
-  - Restricting actions based on bid statuses.
+- Testing included:
+  - Code Validation
+  - Manual Testing
+  - Automated Testing
+
+For a detailed overview of the testing process, including test scenarios, results, and methodologies, please refer to the [TEST.md](TEST.md) file.
+
+## **Bugs Encountered**
+
+During the development and testing phases, the following bugs were identified and resolved:
+
+<details>
+<summary><strong>View Resolved Bugs</strong></summary>
+<br>
+
+
+| Bug Description                                                  | Solution                                                                          | Status              |
+|------------------------------------------------------------------|----------------------------------------------------------------------------------|---------------------|
+| Modal not retrieving information from offer or bid               | Replacing modals with templates                                                  | Fixed and deployed  |
+| User being redirected automatically to the offer page            | Adding the `?next` query parameter to redirect users to the site of origin       | Fixed and deployed  |
+| Users able to access application views after logging out         | Added `login_required` decorator to the views                                    | Fixed and deployed  |
+| Filters not updating correctly by rate type                      | Fixed a mislabeled field in the filter logic                                     | Fixed and deployed  |
+
+</details>
+
+
 
 ---
 
 ## **Credits**
+
+## **Credits**
+
+This project greatly benefited from the knowledge shared through various articles, documentation, and forums, as well as the support provided by Code Institute, its community of students, and my mentor. Additionally, several articles were instrumental in guiding me throughout the journey of implementing my application. Below is a list of resources that significantly contributed to the development process:
+
+- **Password Validation and UI/UX Design**:
+  - [Password Validation Strategies and Best Practices](https://www.uxgrowth.io/blog/password-validation-page-ux-ui-design-strategies-and-best-practices#:~:text=Clear%20communication%20of%20password%20requirements,meets%20the%20necessary%20security%20standards): Provided insights on designing user-friendly and secure password validation pages.
+
+- **Django-Specific Guidance**:
+  - [Django: Displaying List Objects in Templates](https://stackoverflow.com/questions/57288723/django-how-to-display-list-objects-from-model-in-base-html-and-extends-it-to): Helped implement efficient template inheritance for displaying list objects across pages.
+  - [Django Custom Management Commands](https://docs.djangoproject.com/en/5.1/howto/custom-management-commands/): Guided the creation of the `update_exchange_rate.py` script.
+  - [Django Crontab for Scheduled Tasks](https://medium.com/@mainadanielwachira/a-comprehensive-guide-to-using-django-crontab-for-scheduled-tasks-bb62b99083e8): Provided valuable insights into scheduling tasks in Django.
+
+- **Bootstrap Integration**:
+  - [Bootstrap Modals](https://getbootstrap.com/docs/4.0/components/modal/): Used for styling and implementing modal dialogs.
+
+- **Form Handling in Django**:
+  - [Passing Data into Django Forms](https://stackoverflow.com/questions/71187209/how-do-you-pass-data-into-a-django-form): Helped improve form functionality by passing additional data to forms.
+  - [Passing Variables to All Templates](https://stackoverflow.com/questions/12030611/how-do-i-pass-variables-to-all-templates-in-django): Simplified the process of making variables available across all templates.
+
+- **Security and CSRF Handling**:
+  - [Django CSRF Validation Using Fetch](https://stackoverflow.com/questions/43606056/proper-django-csrf-validation-using-fetch-post-request): Ensured proper handling of CSRF tokens in POST requests.
+
+- **Django Request and Response**:
+  - [Attributes of Django Requests](https://docs.djangoproject.com/en/5.1/ref/request-response/#attributes): Helped in efficiently handling requests and responses.
+
+- **Customizing Django Allauth**:
+  - [Modifying Django Allauth Forms](https://gavinwiener.medium.com/modifying-django-allauth-forms-6eb19e77ef56): Guided the customization of authentication-related forms for a better user experience.
+
+These resources provided essential guidance and inspiration during the development process. My thanks to the authors and contributors who shared their knowledge.
+
+
 - **Author**: Pablo Galindo.
 - **Acknowledgments**:
   - Thanks to Django and Bootstrap documentation for guidance.
-  - Special thanks to the alumni community for their feedback.
+  - Gratitude to the Code Institute community for their support and helpful resources.
+  - Thanks to Stack Overflow for helping me solve several issues I faced during the implementation. For example, they helped me figure out how to implement the function to calculate the days left. For more information, check this link.
 
 ---
  
+### Contact
+For more information, please contact [pablo.galindozapata@gmail.com].
