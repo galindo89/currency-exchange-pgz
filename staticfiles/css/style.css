@@ -18,6 +18,21 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.navbar-text {
+    color: #343a40;
+}
+
+a.nav-link {
+    color: #343a40;
+    text-decoration: none;
+}
+
+a.nav-link:hover,
+a.nav-link:focus {
+   
+    color: #007bff;
+}
+
 
 main {
     flex: 1;
@@ -118,6 +133,16 @@ form input {
     border: 1px solid #ced4da;
     font-size: 1rem;
     box-sizing: border-box;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:focus {
+    outline: 3px solid #80bdff;
+    outline-offset: 2px;
 }
 
 /* Form Button Styles */
@@ -311,6 +336,14 @@ a.btn {
         text-align: center;
     }
 
+    a.nav-link:hover, a.nav-link:focus {
+        background-color: initial;
+        color: initial;
+        
+    }
+
+
+
 
 }
 
@@ -334,4 +367,5 @@ a.btn {
     .scroll-container .card {
         width: 200px;
     }
+ 
 }
