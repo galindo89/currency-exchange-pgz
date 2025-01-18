@@ -269,7 +269,7 @@ The table below provides an overview of the application's features, showcasing t
 | User Authorization | User Registration       | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_sign_up.PNG)                 |
 | User Authorization | User Log In             | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_log_in.png)                  |
 | User Authorization | User Log Out            | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_log_out.PNG)                 |
-| User Authorization | Password Reset          | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_password_reset.png)          |
+| User Authorization | Password Reset          | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_password_reset.PNG)          |
 | Offer Management   | Create Offer            | Mobile              | ![Screenshot](readme-docs/features/mobile_create_offer.PNG)             |
 | Offer Management   | Create Offer Validation | Mobile              | ![Screenshot](readme-docs/features/mobile_create_offer_validation.PNG)  |
 | Offer Management   | Edit Offer              | Mobile              | ![Screenshot](readme-docs/features/mobile_edit_offer.PNG)             |
@@ -291,7 +291,7 @@ The table below provides an overview of the application's features, showcasing t
 | Bid Management     | Delete Bid              | Mobile              | ![Screenshot](readme-docs/features/mobile_delete_bid.PNG)               |
 | Bid Management     | Bid Acceptance          | Mobile              | ![Screenshot](readme-docs/features/mobile_bid_acceptance.PNG)           |
 | Bid Management     | Sharing Contact         | Mobile              | ![Screenshot](readme-docs/features/mobile_sharing_contact.PNG)          |
-| Bid Management     | Create Bid              | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_create_bid.PNG)              |
+| Bid Management     | Create Bid              | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_create_bid.png)              |
 | Bid Management     | Edit Bid                | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_edit_bid.PNG)                |
 | Bid Management     | Edit Bid Validation     | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_edit_bid_validation.PNG)     |
 | Bid Management     | Delete Bid              | Desktop and Tablets | ![Screenshot](readme-docs/features/desktop_delete_bid.PNG)              |
